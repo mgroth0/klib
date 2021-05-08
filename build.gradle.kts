@@ -5,23 +5,10 @@ val JIGSAW: Boolean by rootProject.extra
 plugins {
   id("org.jetbrains.kotlin.multiplatform")
   `java-library`
-  `maven-publish`
 }
 
 if (JIGSAW) java {
   modularity.inferModulePath.set(true)
-}
-
-publishing {
-  publications {
-	create<MavenPublication>("maven") {
-	  groupId = "matt"
-	  artifactId = "klib"
-	  version = "0.0.1"
-
-	  from(components["java"])
-	}
-  }
 }
 
 
