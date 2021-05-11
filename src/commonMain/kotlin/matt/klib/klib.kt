@@ -16,3 +16,8 @@ infix fun <K, V> Map<K, V>.isEquivalentTo(other: Map<K, V>?): Boolean {
 //  println("here6")
   return true
 }
+
+
+interface Searchable {
+  val searchSeq: Sequence<String>
+}
