@@ -22,6 +22,9 @@ class DefaultStoringMap<K, V>(
 	  map[key] = it
 	}
   }
+  fun getWithoutSetting(key: K): V? {
+	return map[key]
+  }
 
   override fun isEmpty() = map.isEmpty()
 
