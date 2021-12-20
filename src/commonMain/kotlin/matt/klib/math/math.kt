@@ -1,5 +1,6 @@
 package matt.klib.math
 
+import kotlin.math.abs
 import kotlin.math.pow
 
 
@@ -11,3 +12,8 @@ const val QUADRILLION = THOUSAND*TRILLION
 
 fun Double.sq() = pow(2)
 fun Double.cubed() = pow(3)
+
+fun Int.isEven() = this == 0 || abs(this).mod(2) == 0
+fun Int.isOdd() = !isEven()
+
+fun DoubleArray.toIntArray() = this.map { it.toInt() }.toIntArray()
