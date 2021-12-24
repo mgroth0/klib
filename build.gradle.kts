@@ -46,7 +46,7 @@ if (JIGSAW) {
 	}
   }
 }
-repositories {
-  mavenCentral()
-}
+//repositories {
+//  mavenCentral()
+//}
 
