@@ -1,11 +1,18 @@
 package matt.klib.log
 
 var DEBUG = false
+var PROFILE = true
 
 fun debug(s: Any) {
   if (DEBUG) {
 	println(s.toString())
   }
+}
+
+fun profile(s: Any) {
+    if (PROFILE) {
+        println(s.toString())
+    }
 }
 
 private val warned = mutableListOf<Any>()
