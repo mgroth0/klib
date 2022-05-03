@@ -1,4 +1,10 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package matt.klib
+
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind.EXACTLY_ONCE
+import kotlin.contracts.contract
 
 
 infix fun <K, V> Map<K, V>.isEquivalentTo(other: Map<K, V>?): Boolean {
@@ -18,4 +24,16 @@ interface Searchable {
 
 interface Command {
   fun run(arg: String)
+}
+
+
+
+inline fun <T> T.takeUnlessPrintln(msg: String, predicate: (T) -> Boolean): T? {
+  contract {
+	callsInPlace(predicate, EXACTLY_ONCE)
+  }
+  return if (!predicate(this)) this else run{
+	println(msg)
+	null
+  }
 }
