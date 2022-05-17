@@ -26,7 +26,13 @@ interface Command {
   fun run(arg: String)
 }
 
+enum class ExitStatus {
+  CONTINUE, EXIT
+}
 
+interface CommandWithExitStatus {
+  fun run(arg: String): ExitStatus
+}
 
 inline fun <T> T.takeUnlessPrintln(msg: String, predicate: (T) -> Boolean): T? {
   contract {
