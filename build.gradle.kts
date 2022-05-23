@@ -5,15 +5,24 @@ val JIGSAW: Boolean by rootProject.extra
 plugins {
   id("org.jetbrains.kotlin.multiplatform")
   `java-library`
+
 }
 
-if (JIGSAW) java {
-  modularity.inferModulePath.set(true)
+java {
+  modularity.inferModulePath.set(JIGSAW)
+  val javaLangVersion = JavaLanguageVersion.of(tomlVersion("java"))
+  val javaVersion = JavaVersion.toVersion(tomlVersion("java"))
+  toolchain {
+	languageVersion.set(javaLangVersion)
+  }
 }
+
+
 
 
 
 kotlin {
+
   jvm {
 
 
@@ -26,6 +35,10 @@ kotlin {
 	//	compilations.all {
 	//	  kotlinOptions.mventionKotlinJvmOptions()
 	//	}
+
+
+
+
   }
 
   sourceSets {
