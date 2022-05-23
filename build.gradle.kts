@@ -31,7 +31,8 @@ kotlin {
   sourceSets {
 	all {
 	  /*https://kotlinlang.org/docs/opt-in-requirements.html#module-wide-opt-in*/
-	  languageSettings.useExperimentalAnnotation("org.mylibrary.OptInAnnotation")
+	  languageSettings.optIn("org.mylibrary.OptInAnnotation")
+//	  languageSettings.useExperimentalAnnotation("org.mylibrary.OptInAnnotation")
 	}
   }
 }
