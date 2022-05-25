@@ -21,3 +21,10 @@ fun Double.cubed() = pow(3)
 
 
 fun DoubleArray.toIntArray() = this.map { it.toInt() }.toIntArray()
+
+data class Geometry(
+  val x: Double,
+  val y: Double,
+  val width: Double,
+  val height: Double
+)
