@@ -2,7 +2,6 @@
 
 package matt.klib
 
-import java.io.File
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
 import kotlin.contracts.contract
@@ -46,5 +45,5 @@ inline fun <T> T.takeUnlessPrintln(msg: String, predicate: (T) -> Boolean): T? {
 }
 
 
-val USER_HOME = File(System.getProperty("user.home"))
-val REGISTERED_FOLDER = File(USER_HOME.resolve(".registeredDir.txt").readText().trim())
+
+fun helloKlib(): String = "hello from klib commons"
