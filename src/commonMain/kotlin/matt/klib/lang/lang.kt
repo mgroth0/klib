@@ -22,3 +22,15 @@ fun inlined(op: () -> Unit) {
 //    Pleasework()
     op()
 }
+
+
+/*kinda how JetBrains wants us to do it*/
+fun String.cap() =
+  replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+/*if I go back to 1.4: this.capitalize()*/
+
+
+/*kinda how JetBrains wants us to do it*/
+fun String.decap() =
+  replaceFirstChar { it.lowercase() }
+/*if I go back to 1.4: this.decapitalize()*/
