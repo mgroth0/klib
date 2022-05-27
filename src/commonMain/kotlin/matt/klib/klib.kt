@@ -30,7 +30,7 @@ enum class ExitStatus {
   CONTINUE, EXIT
 }
 
-interface CommandWithExitStatus {
+interface SingleArgCommandWithExitStatus {
   fun run(arg: String): ExitStatus
 }
 
