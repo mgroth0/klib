@@ -34,3 +34,6 @@ fun String.cap() =
 fun String.decap() =
   replaceFirstChar { it.lowercase() }
 /*if I go back to 1.4: this.decapitalize()*/
+
+
+val Any.void get() = Unit
