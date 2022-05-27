@@ -2,7 +2,6 @@
 
 package matt.klib
 
-import java.io.File
+import java.awt.Color
 
-val USER_HOME = File(System.getProperty("user.home"))
-val REGISTERED_FOLDER = File(USER_HOME.resolve(".registeredDir.txt").readText().trim())
+fun helloJvm() = "hello from common jvm(${Color(1, 2, 3)}) lib on ${System.getProperty("os.name")}"
