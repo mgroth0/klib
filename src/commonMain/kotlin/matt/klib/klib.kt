@@ -47,3 +47,4 @@ inline fun <T> T.takeUnlessPrintln(msg: String, predicate: (T) -> Boolean): T? {
 
 
 fun helloKlib(): String = "hello from klib commons"
+
