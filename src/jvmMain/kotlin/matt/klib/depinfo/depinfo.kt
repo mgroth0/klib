@@ -20,5 +20,5 @@ import kotlinx.serialization.Serializable
   val group: String,
   val name: String,
 //  val file: String,
-  val dependencies: MutableList<Dependency> = mutableListOf()
+  val configurations: MutableList<Configuration> = mutableListOf()
 )
