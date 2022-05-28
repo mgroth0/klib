@@ -3,6 +3,7 @@ package matt.klib.str
 import matt.klib.lang.err
 
 fun String.lineIndexOfIndex(i: Int): Int {
+
   if (length == 0) {
 	if (i == 0) return 0
 	else err("no")
