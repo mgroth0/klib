@@ -30,9 +30,12 @@ enum class ExitStatus {
   CONTINUE, EXIT
 }
 
-interface SingleArgCommandWithExitStatus {
-  fun run(arg: String): ExitStatus
-}
+//interface SingleArgCommandWithExitStatus {
+//  fun run(arg: String): ExitStatus
+//}
+//interface SingleArgCommandWithStringResult {
+//  fun run(arg: String): String
+//}
 
 inline fun <T> T.takeUnlessPrintln(msg: String, predicate: (T) -> Boolean): T? {
   contract {
