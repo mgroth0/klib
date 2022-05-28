@@ -6,27 +6,27 @@ import kotlin.contracts.InvocationKind.AT_LEAST_ONCE
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
 import kotlin.contracts.contract
 
-infix fun Boolean.ifTrue(op: () -> Unit) {
-    if (this) op()
+infix fun Boolean.ifTrue(op: ()->Unit) {
+  if (this) op()
 }
 
 
-infix fun <R> Boolean.ifTrueOrNull(op: () -> R): R? {
-   return  if (this) op() else null
+infix fun <R> Boolean.ifTrueOrNull(op: ()->R): R? {
+  return if (this) op() else null
 }
 
-infix fun Boolean.ifFalse(op: () -> Unit) {
-    if (!this) op()
+infix fun Boolean.ifFalse(op: ()->Unit) {
+  if (!this) op()
 }
 
 
-fun <T : Any> T.inList(): List<T> {
-    return listOf(this)
+fun <T: Any> T.inList(): List<T> {
+  return listOf(this)
 }
 
-fun inlined(op: () -> Unit) {
-//    Pleasework()
-    op()
+fun inlined(op: ()->Unit) {
+  //    Pleasework()
+  op()
 }
 
 
@@ -53,7 +53,7 @@ infix fun <A, B, C> Pair<A, B>.trip(third: C): Triple<A, B, C> {
 @OptIn(ExperimentalContracts::class)
 inline fun <T: Any> T.alsoPrintln(op: T.()->String): T {
   contract {
-    callsInPlace(op, EXACTLY_ONCE)
+	callsInPlace(op, EXACTLY_ONCE)
   }
   println(op.invoke(this))
   return this
@@ -63,7 +63,7 @@ inline fun <T: Any> T.alsoPrintln(op: T.()->String): T {
 @ExperimentalContracts
 inline fun <T: Any> T.go(block: (T)->Unit) {
   contract {
-    callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+	callsInPlace(block, InvocationKind.EXACTLY_ONCE)
   }
   block(this)
 }
@@ -72,7 +72,7 @@ inline fun <T: Any> T.go(block: (T)->Unit) {
 @ExperimentalContracts
 inline fun <T: Any> T.applyIt(block: T.(T)->Unit): T {
   contract {
-    callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+	callsInPlace(block, InvocationKind.EXACTLY_ONCE)
   }
   block(this)
   return this
@@ -93,7 +93,6 @@ typealias I = Int
 typealias D = Double
 
 
-
 infix fun <T> MutableCollection<T>.setAll(c: Collection<T>) {
   /*when (this) {
     is ObservableList<T>
@@ -103,14 +102,12 @@ infix fun <T> MutableCollection<T>.setAll(c: Collection<T>) {
 }
 
 
-
-
 fun <E> MutableCollection<E>.addIfNotIn(e: E): Boolean {
   return if (e in this) {
-    false
+	false
   } else {
-    add(e)
-    true
+	add(e)
+	true
   }
 }
 
@@ -118,13 +115,12 @@ fun <E> MutableCollection<E>.addIfNotIn(e: E): Boolean {
 @ExperimentalContracts
 inline fun whileTrue(op: ()->Boolean) {
   contract {
-    callsInPlace(op, AT_LEAST_ONCE)
+	callsInPlace(op, AT_LEAST_ONCE)
   }
   @Suppress("ControlFlowWithEmptyBody")
   while (op()) {
   }
 }
-
 
 
 fun err(s: String = ""): Nothing {
@@ -133,3 +129,15 @@ fun err(s: String = ""): Nothing {
 }
 
 val NEVER: Nothing get() = err("NEVER")
+
+fun listsEqual(list1: List<*>, list2: List<*>): Boolean {
+
+  if (list1.size != list2.size)
+	return false
+
+  val pairList = list1.zip(list2)
+
+  return pairList.all { (elt1, elt2) ->
+	elt1 == elt2
+  }
+}
