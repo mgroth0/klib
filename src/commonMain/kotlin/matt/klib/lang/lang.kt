@@ -2,6 +2,7 @@ package matt.klib.lang
 
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
+import kotlin.contracts.InvocationKind.AT_LEAST_ONCE
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
 import kotlin.contracts.contract
 
@@ -112,3 +113,23 @@ fun <E> MutableCollection<E>.addIfNotIn(e: E): Boolean {
     true
   }
 }
+
+
+@ExperimentalContracts
+inline fun whileTrue(op: ()->Boolean) {
+  contract {
+    callsInPlace(op, AT_LEAST_ONCE)
+  }
+  @Suppress("ControlFlowWithEmptyBody")
+  while (op()) {
+  }
+}
+
+
+
+fun err(s: String = ""): Nothing {
+  println("demmy")
+  throw RuntimeException(s)
+}
+
+val NEVER: Nothing get() = err("NEVER")
