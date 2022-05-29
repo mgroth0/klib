@@ -5,6 +5,9 @@ import matt.klib.log.warn
 interface Identified {
   val id: Int
 }
+interface MaybeIdentified {
+  val id: Int?
+}
 
 interface Named {
   var name: String
