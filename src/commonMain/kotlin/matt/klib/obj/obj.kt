@@ -2,8 +2,8 @@ package matt.klib.obj
 
 import matt.klib.log.warn
 
-interface Identified {
-  val id: Int
+interface Identified: MaybeIdentified {
+  override val id: Int
 }
 interface MaybeIdentified {
   val id: Int?
@@ -22,11 +22,17 @@ open class Unique(
 	"${this::class.simpleName} $id: $name"
 }
 
-fun new_id(
+fun newId(
   vararg against: List<Identified>
 ): Int {
   warn("what if i delete the highest? i need to keep a record of nextID instead of this")
   return against.flatMap { it }.maxOf { it.id } + 1
+}
+fun new_id(
+  vararg against: List<MaybeIdentified>
+): Int {
+  warn("what if i delete the highest? i need to keep a record of nextID instead of this")
+  return against.flatMap { it }.maxOf { it.id!! } + 1
 }
 
 interface DSL
