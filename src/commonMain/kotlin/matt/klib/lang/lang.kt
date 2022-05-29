@@ -5,6 +5,7 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.InvocationKind.AT_LEAST_ONCE
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
 import kotlin.contracts.contract
+import kotlin.reflect.KClass
 
 infix fun Boolean.ifTrue(op: ()->Unit) {
   if (this) op()
@@ -140,4 +141,74 @@ fun listsEqual(list1: List<*>, list2: List<*>): Boolean {
   return pairList.all { (elt1, elt2) ->
 	elt1 == elt2
   }
+}
+
+
+sealed interface KotlinPrimitive {
+  val kls: KClass<*>
+}
+
+
+enum class Ints(override val kls: KClass<*>): KotlinPrimitive {
+  Byte(kotlin.Byte::class),
+  Short(kotlin.Short::class),
+  Int(kotlin.Int::class),
+  Long(kotlin.Long::class),
+}
+
+enum class IntArrays(override val kls: KClass<*>): KotlinPrimitive {
+  ByteArray(kotlin.ByteArray::class),
+  IntArray(kotlin.IntArray::class),
+  ShortArray(kotlin.ShortArray::class),
+  LongArray(kotlin.LongArray::class),
+}
+
+enum class FloatingPoints(override val kls: KClass<*>): KotlinPrimitive {
+  Float(kotlin.Float::class),
+  Double(kotlin.Double::class),
+}
+
+enum class FloatingPointArrays(override val kls: KClass<*>): KotlinPrimitive {
+  FloatArray(kotlin.FloatArray::class),
+  DoubleArray(kotlin.DoubleArray::class),
+}
+
+enum class UnsignedInts(override val kls: KClass<*>): KotlinPrimitive {
+  UByte(kotlin.UByte::class),
+  UShort(kotlin.UShort::class),
+  UInt(kotlin.UInt::class),
+  ULong(kotlin.ULong::class),
+}
+
+@OptIn(ExperimentalUnsignedTypes::class)
+enum class UnsignedIntArrays(override val kls: KClass<*>): KotlinPrimitive {
+  /*unsigned arrays and ranges*/
+  UByteArray(kotlin.UByteArray::class),
+  UShortArray(kotlin.UShortArray::class),
+  UIntArray(kotlin.UIntArray::class),
+  ULongArray(kotlin.ULongArray::class),
+}
+
+enum class Booleans(override val kls: KClass<*>): KotlinPrimitive {
+  Boolean(kotlin.Boolean::class),
+}
+
+enum class BooleanArrays(override val kls: KClass<*>): KotlinPrimitive {
+  BooleanArray(kotlin.BooleanArray::class),
+}
+
+enum class Chars(override val kls: KClass<*>): KotlinPrimitive {
+  Char(kotlin.Char::class),
+}
+
+enum class CharArrays(override val kls: KClass<*>): KotlinPrimitive {
+  CharArray(kotlin.CharArray::class),
+}
+
+enum class Strings(override val kls: KClass<*>): KotlinPrimitive {
+  String(kotlin.String::class),
+}
+
+enum class Arrays(override val kls: KClass<*>): KotlinPrimitive {
+  Array(kotlin.Array::class),
 }
