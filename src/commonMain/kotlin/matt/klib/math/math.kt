@@ -1,5 +1,6 @@
 package matt.klib.math
 
+import kotlinx.serialization.Serializable
 import kotlin.math.abs
 import kotlin.math.pow
 
@@ -22,6 +23,7 @@ fun Double.cubed() = pow(3)
 
 fun DoubleArray.toIntArray() = this.map { it.toInt() }.toIntArray()
 
+@Serializable
 data class Geometry(
   val x: Double,
   val y: Double,
