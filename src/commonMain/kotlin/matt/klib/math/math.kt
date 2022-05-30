@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmName
 import kotlin.math.abs
 import kotlin.math.exp
+import kotlin.math.floor
 import kotlin.math.ln
 import kotlin.math.pow
 import kotlin.math.round
@@ -224,3 +225,18 @@ fun Double.getPoisson(): Int {
 
 
 }
+
+
+
+@Suppress("unused")
+fun Double.roundToDecimal(n: Int): Double {
+
+  val temp = this*(n*10)
+  val tempInt = temp.roundToInt().toDouble()
+  return tempInt/(n*10)
+
+}
+
+
+
+fun Double.floorInt() = floor(this).toInt()
