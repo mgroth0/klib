@@ -31,6 +31,9 @@ val isNewMac by lazy {
 operator fun File.get(item: String): File {
   return resolve(item)
 }
+operator fun File.get(item: Char): File {
+  return resolve(item.toString())
+}
 
 val USER_HOME = File(thisMachine.homeDir)
 val REGISTERED_FOLDER = USER_HOME[thisMachine.registeredDir]
