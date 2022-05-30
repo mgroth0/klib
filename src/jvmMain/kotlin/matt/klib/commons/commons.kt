@@ -55,3 +55,4 @@ val SCREENSHOT_FOLDER = REGISTERED_FOLDER["screenshots"]
 val CACHE_FOLDER = REGISTERED_FOLDER["cache"]
 val KJG_DATA_FOLDER = DATA_FOLDER.resolve("kjg")
 
+const val DS_STORE = ".DS_Store"
