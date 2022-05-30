@@ -26,7 +26,7 @@ val isKotlin1_4OrEarlier = KotlinVersion.CURRENT.major <= 1 && KotlinVersion.CUR
 object CharCheck {
   init {
 	if (isKotlin1_4OrEarlier) {
-	  err("OPPOSITE OF THE FOLLOWING")	/*if (KotlinVersion.CURRENT.isAtLeast(1, 5)) {*/
+	  err("OPPOSITE OF THE FOLLOWING")    /*if (KotlinVersion.CURRENT.isAtLeast(1, 5)) {*/
 	  err("delete Char.code below")
 	  err("update decap")
 	  err("update cap")
@@ -232,4 +232,16 @@ fun String.toHyphenCase(): String {
   if (isBlank()) return this
   return this[0].lowercase() + toCharArray().map { it.toString() }.drop(1)
 	.joinToString(separator = "") { if (it[0].isUpperCase()) "-${it[0].lowercase()}" else it }
+}
+
+class StringLineBuilder(private var s: String) {
+  fun get() = s
+  override fun toString() = s
+  operator fun plusAssign(a: Any?) {
+	s += "\n$a"
+  }
+
+  infix fun tab(a: Any?) {
+	s += "\n\t$a"
+  }
 }
