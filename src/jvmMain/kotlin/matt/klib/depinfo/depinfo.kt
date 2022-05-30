@@ -19,6 +19,5 @@ import kotlinx.serialization.Serializable
 @Serializable data class Dependency(
   val group: String,
   val name: String,
-//  val file: String,
   val configurations: MutableList<Configuration> = mutableListOf()
 )
