@@ -31,6 +31,7 @@ val isNewMac by lazy {
 operator fun File.get(item: String): File {
   return resolve(item)
 }
+
 operator fun File.get(item: Char): File {
   return resolve(item.toString())
 }
@@ -38,13 +39,19 @@ operator fun File.get(item: Char): File {
 val USER_HOME = File(thisMachine.homeDir)
 val REGISTERED_FOLDER = USER_HOME[thisMachine.registeredDir]
 val FLOW_FOLDER = thisMachine.flowFolder?.let { REGISTERED_FOLDER[it] }
+val KCOMP_FOLDER = FLOW_FOLDER!!.parentFile["kcomp"]
 val DATA_FOLDER = REGISTERED_FOLDER.resolve("data")
-val LOG_FOLDER = REGISTERED_FOLDER.resolve("log")?.apply { mkdir() }
+val LOG_FOLDER = REGISTERED_FOLDER["log"].apply { mkdir() }
 val USER_DIR = File(System.getProperty("user.dir"))
 val TEMP_DIR = USER_DIR["tmp"].apply { mkdir() }
 val DNN_FOLDER = when (thisMachine) {
   NEW_MAC -> REGISTERED_FOLDER["ide/dnn"]
   OLD_MAC -> REGISTERED_FOLDER["todo/science/dnn"]
+  WINDOWS -> null
+}
+val HEP_FOLDER = when (thisMachine) {
+  NEW_MAC -> REGISTERED_FOLDER["ide/hep"]
+  OLD_MAC -> REGISTERED_FOLDER["todo/science/hep"]
   WINDOWS -> null
 }
 val WINDOW_GEOMETRY_FOLDER = DATA_FOLDER["window"]
