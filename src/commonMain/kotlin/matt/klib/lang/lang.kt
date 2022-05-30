@@ -92,6 +92,8 @@ typealias B = Boolean
 typealias S = String
 typealias I = Int
 typealias D = Double
+typealias L = Long
+typealias Num = Number
 
 
 infix fun <T> MutableCollection<T>.setAll(c: Collection<T>) {
