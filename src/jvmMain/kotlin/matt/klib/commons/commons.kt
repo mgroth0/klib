@@ -35,7 +35,7 @@ operator fun MFile.get(item: Char): MFile {
 val USER_HOME = MFile(thisMachine.homeDir)
 val REGISTERED_FOLDER = USER_HOME[thisMachine.registeredDir]
 val FLOW_FOLDER = thisMachine.flowFolder?.let { REGISTERED_FOLDER[it] }
-val KCOMP_FOLDER = FLOW_FOLDER!!.parentFile["kcomp"]
+val KCOMP_FOLDER = FLOW_FOLDER!!.parentFile!!["kcomp"]
 val DATA_FOLDER = REGISTERED_FOLDER.resolve("data")
 val LOG_FOLDER = REGISTERED_FOLDER["log"].apply { mkdir() }
 val USER_DIR = MFile(System.getProperty("user.dir"))

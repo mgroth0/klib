@@ -42,8 +42,8 @@ class MFile(val userPath: String): File(userPath) {
 	fun createTempFile(prefix: String, suffix: String?) = MFile(File.createTempFile(prefix, suffix))
   }
 
-  override fun getParentFile(): MFile {
-	return super.getParentFile().toMFile()
+  override fun getParentFile(): MFile? {
+	return super.getParentFile()?.toMFile()
   }
 
   override fun getAbsoluteFile(): MFile {
