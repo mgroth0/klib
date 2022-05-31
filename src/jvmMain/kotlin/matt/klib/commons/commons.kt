@@ -1,48 +1,44 @@
 package matt.klib.commons
 
+import matt.klib.file.MFile
+import matt.klib.file.ext.resolve
 import matt.klib.sys.Machine.NEW_MAC
 import matt.klib.sys.Machine.OLD_MAC
 import matt.klib.sys.Machine.WINDOWS
 import java.io.BufferedReader
-import java.io.File
 import java.io.InputStreamReader
 
 val os: String by lazy { System.getProperty("os.name") }
-val ismac by lazy { os.startsWith("Mac") }
-
+val uname by lazy {
+  val proc = ProcessBuilder("uname", "-m").start()
+  BufferedReader(InputStreamReader(proc.inputStream)).readText().trim()
+}
 val thisMachine by lazy {
   when {
-	ismac -> when {
-	  isNewMac -> NEW_MAC
+	os.startsWith("Mac") -> when {
+	  uname == "arm64" -> NEW_MAC
 	  else     -> OLD_MAC
 	}
-	else  -> WINDOWS
+	else                 -> WINDOWS
   } // TODO: CHECK LINUX
 }
 
 
-val isNewMac by lazy {
-  ismac && run {
-	val proc = ProcessBuilder("uname", "-m").start()
-	BufferedReader(InputStreamReader(proc.inputStream)).readText().trim()
-  } == "arm64"
-}
-
-operator fun File.get(item: String): File {
+operator fun MFile.get(item: String): MFile {
   return resolve(item)
 }
 
-operator fun File.get(item: Char): File {
+operator fun MFile.get(item: Char): MFile {
   return resolve(item.toString())
 }
 
-val USER_HOME = File(thisMachine.homeDir)
+val USER_HOME = MFile(thisMachine.homeDir)
 val REGISTERED_FOLDER = USER_HOME[thisMachine.registeredDir]
 val FLOW_FOLDER = thisMachine.flowFolder?.let { REGISTERED_FOLDER[it] }
 val KCOMP_FOLDER = FLOW_FOLDER!!.parentFile["kcomp"]
 val DATA_FOLDER = REGISTERED_FOLDER.resolve("data")
 val LOG_FOLDER = REGISTERED_FOLDER["log"].apply { mkdir() }
-val USER_DIR = File(System.getProperty("user.dir"))
+val USER_DIR = MFile(System.getProperty("user.dir"))
 val TEMP_DIR = USER_DIR["tmp"].apply { mkdir() }
 val DNN_FOLDER = when (thisMachine) {
   NEW_MAC -> REGISTERED_FOLDER["ide/dnn"]
