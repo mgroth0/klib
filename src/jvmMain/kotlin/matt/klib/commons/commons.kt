@@ -2,9 +2,9 @@ package matt.klib.commons
 
 import matt.klib.file.MFile
 import matt.klib.file.ext.resolve
-import matt.klib.sys.Machine.NEW_MAC
-import matt.klib.sys.Machine.OLD_MAC
-import matt.klib.sys.Machine.WINDOWS
+import matt.klib.sys.NEW_MAC
+import matt.klib.sys.OLD_MAC
+import matt.klib.sys.WINDOWS
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -17,7 +17,7 @@ val thisMachine by lazy {
   when {
 	os.startsWith("Mac") -> when {
 	  uname == "arm64" -> NEW_MAC
-	  else     -> OLD_MAC
+	  else             -> OLD_MAC
 	}
 	else                 -> WINDOWS
   } // TODO: CHECK LINUX
