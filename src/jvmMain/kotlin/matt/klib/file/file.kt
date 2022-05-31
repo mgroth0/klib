@@ -14,11 +14,11 @@ fun File.toMFile() = MFile(this)
   I'm actually shocked it took me so long to figure this out*/
 
 
-class FixedFile(s: String): File(s) {
-  init {
-	MFile.separatorChar
-  }
-}
+//class FixedFile(s: String): MFile(s) {
+//  init {
+//	MFile.separatorChar
+//  }
+//}
 
 
 class MFile(val userPath: String): File(userPath) {
@@ -36,7 +36,7 @@ class MFile(val userPath: String): File(userPath) {
 	val pathSeparator = File.pathSeparator
 
 	fun listRoots() = File.listRoots().map { MFile(it) }.toTypedArray()
-	fun createTempFile(prefix: String, suffix: String?, directory: File?) =
+	fun createTempFile(prefix: String, suffix: String?, directory: MFile?) =
 	  MFile(File.createTempFile(prefix, suffix, directory))
 
 	fun createTempFile(prefix: String, suffix: String?) = MFile(File.createTempFile(prefix, suffix))
