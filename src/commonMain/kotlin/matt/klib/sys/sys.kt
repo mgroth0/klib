@@ -13,7 +13,7 @@ enum class Machine(
   NEW_MAC(
 	homeDir = "/Users/matthewgroth",
 	registeredDir = "registered",
-	flowFolder = "flow"
+	flowFolder = "ide/flow"
   ),
   WINDOWS(
 	homeDir = ":C::!@#$%^&*(C$^Some/Weird/Windows/Path",
