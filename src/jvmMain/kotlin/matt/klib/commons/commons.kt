@@ -31,6 +31,12 @@ operator fun MFile.get(item: String): MFile {
 operator fun MFile.get(item: Char): MFile {
   return resolve(item.toString())
 }
+operator fun MFile.plus(item: String): MFile {
+  return resolve(item)
+}
+operator fun MFile.plus(item: Char): MFile {
+  return resolve(item.toString())
+}
 
 val USER_HOME = MFile(thisMachine.homeDir)
 val REGISTERED_FOLDER = USER_HOME[thisMachine.registeredDir]
