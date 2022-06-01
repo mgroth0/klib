@@ -31,15 +31,19 @@ operator fun MFile.get(item: String): MFile {
 operator fun MFile.get(item: Char): MFile {
   return resolve(item.toString())
 }
+
 operator fun MFile.plus(item: String): MFile {
   return resolve(item)
 }
+
 operator fun MFile.plus(item: Char): MFile {
   return resolve(item.toString())
 }
 
 val USER_HOME = MFile(thisMachine.homeDir)
 val REGISTERED_FOLDER = USER_HOME[thisMachine.registeredDir]
+val BIN_FOLDER = REGISTERED_FOLDER + "bin"
+val APPLESCRIPT_FOLDER = (BIN_FOLDER + "applescript").apply { mkdirs() }
 val FLOW_FOLDER = thisMachine.flowFolder?.let { REGISTERED_FOLDER[it] }
 val KCOMP_FOLDER = FLOW_FOLDER!!.parentFile!!["kcomp"]
 val DATA_FOLDER = REGISTERED_FOLDER.resolve("data")
