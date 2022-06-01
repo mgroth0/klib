@@ -37,11 +37,11 @@ enum class ExitStatus {
 //  fun run(arg: String): String
 //}
 
-inline fun <T> T.takeUnlessPrintln(msg: String, predicate: (T) -> Boolean): T? {
+inline fun <T> T.takeUnlessPrintln(msg: String, predicate: (T)->Boolean): T? {
   contract {
 	callsInPlace(predicate, EXACTLY_ONCE)
   }
-  return if (!predicate(this)) this else run{
+  return if (!predicate(this)) this else run {
 	println(msg)
 	null
   }
@@ -50,3 +50,5 @@ inline fun <T> T.takeUnlessPrintln(msg: String, predicate: (T) -> Boolean): T? {
 
 fun helloKlib(): String = "hello from klib commons"
 
+const val FRONTMOST_APP_NAME = "frontmostAppName"
+const val FILE_TEST = "FILE_TEST"
