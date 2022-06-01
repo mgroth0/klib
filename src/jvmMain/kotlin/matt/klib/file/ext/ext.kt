@@ -5,11 +5,11 @@ import matt.klib.file.toMFile
 import matt.klib.str.lower
 import java.io.IOException
 
-fun createTempDir(prefix: String = "tmp", suffix: String? = null, directory: MFile? = null) =
+@Suppress("DEPRECATION") fun createTempDir(prefix: String = "tmp", suffix: String? = null, directory: MFile? = null) =
   kotlin.io.createTempDir(prefix, suffix, directory).toMFile()
 
 
-fun createTempFile(prefix: String = "tmp", suffix: String? = null, directory: MFile? = null) =
+@Suppress("DEPRECATION") fun createTempFile(prefix: String = "tmp", suffix: String? = null, directory: MFile? = null) =
   kotlin.io.createTempFile(prefix, suffix, directory).toMFile()
 
 fun MFile.relativeTo(base: MFile): MFile = userFile.relativeTo(base.userFile).toMFile()
