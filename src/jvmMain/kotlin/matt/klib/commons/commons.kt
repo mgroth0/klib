@@ -62,11 +62,17 @@ val CACHE_FOLDER = REGISTERED_FOLDER["cache"]
 val KJG_DATA_FOLDER = DATA_FOLDER.resolve("kjg")
 //}
 
+val REL_ROOT_FILES = MFile("RootFiles")
+val REL_LIBS_VERSIONS_TOML = REL_ROOT_FILES + "libs.versions.toml"
+
+
 //object CommonFileNames {
 const val DS_STORE = ".DS_Store"
 //}
 
 //object KNCommandKeys {
+val OPEN_KEY = "OPEN"
+val OPEN_RELATIVE_KEY = "OPEN_REL"
 val OPEN_NEAREST_GRADLE_BUILDSCRIPT = "OPEN_NEAREST_GRADLE_BUILDSCRIPT"
 val OPEN_NEARST_KOTLIN_DESCENDENT = "OPEN_NEARST_KOTLIN_DESCENDENT"
 //}

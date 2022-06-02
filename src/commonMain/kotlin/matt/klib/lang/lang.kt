@@ -150,7 +150,6 @@ sealed interface KotlinPrimitive {
   val kls: KClass<*>
 }
 
-
 enum class Ints(override val kls: KClass<*>): KotlinPrimitive {
   Byte(kotlin.Byte::class),
   Short(kotlin.Short::class),
@@ -215,4 +214,27 @@ enum class Arrays(override val kls: KClass<*>): KotlinPrimitive {
   Array(kotlin.Array::class),
 }
 
+inline val <reified T: Any> KClass<T>.jDefault: T?
+  get()  {
+  return when (T::class) {
+    Boolean::class -> false as T
+    Double::class -> 0.0 as T
+    Float::class -> 0.0f as T
+    Byte::class  -> 0 as T
+    Int::class -> 0 as T
+    Long::class -> 0 as T
+    Short::class -> 0 as T
+    Char::class -> '\u0000' as T
+    else -> null
+  }
+}
+
+//@Suppress("UnusedReceiverParameter") val KClass<Boolean>.jDefault: Boolean get() = false
+//@Suppress("UnusedReceiverParameter") val KClass<Double>.jDefault: Double get() = 0.0
+//@Suppress("UnusedReceiverParameter") val KClass<Byte>.jDefault: Byte get() = 0
+//@Suppress("UnusedReceiverParameter") val KClass<Int>.jDefault: Int get() = 0
+//@Suppress("UnusedReceiverParameter") val KClass<Long>.jDefault: Long get() = 0
+//@Suppress("UnusedReceiverParameter") val KClass<Float>.jDefault: Float get() = 0.0f
+//@Suppress("UnusedReceiverParameter") val KClass<Char>.jDefault: Char get() = '\u0000'
+//@Suppress("UnusedReceiverParameter") val KClass<Short>.jDefault: Short get() = 0
 
