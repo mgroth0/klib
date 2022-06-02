@@ -19,6 +19,7 @@ val thisMachine by lazy {
 	  uname == "arm64" -> NEW_MAC
 	  else             -> OLD_MAC
 	}
+
 	else                 -> WINDOWS
   } // TODO: CHECK LINUX
 }
@@ -40,6 +41,8 @@ operator fun MFile.plus(item: Char): MFile {
   return resolve(item.toString())
 }
 
+///*need things like this to all be in objects because they are instantiated lazily, and therefore wont be a memory leak issue when trying to have dynamic intelliJ plugins... in general this is definitely the best design and I'm sure this pattern has even broader advantages*/
+//object CommonFiles {
 val USER_HOME = MFile(thisMachine.homeDir)
 val REGISTERED_FOLDER = USER_HOME[thisMachine.registeredDir]
 val BIN_FOLDER = REGISTERED_FOLDER + "bin"
@@ -68,9 +71,15 @@ val VAR_JSON = DATA_FOLDER["VAR.json"]
 val SCREENSHOT_FOLDER = REGISTERED_FOLDER["screenshots"]
 val CACHE_FOLDER = REGISTERED_FOLDER["cache"]
 val KJG_DATA_FOLDER = DATA_FOLDER.resolve("kjg")
+//}
 
+//object CommonFileNames {
 const val DS_STORE = ".DS_Store"
+//}
 
+//object KNCommandKeys {
 val OPEN_NEAREST_GRADLE_BUILDSCRIPT = "OPEN_NEAREST_GRADLE_BUILDSCRIPT"
 val OPEN_NEARST_KOTLIN_DESCENDENT = "OPEN_NEARST_KOTLIN_DESCENDENT"
+//}
+
 
