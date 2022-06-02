@@ -47,23 +47,12 @@ val USER_HOME = MFile(thisMachine.homeDir)
 val REGISTERED_FOLDER = USER_HOME[thisMachine.registeredDir]
 val BIN_FOLDER = REGISTERED_FOLDER + "bin"
 val APPLESCRIPT_FOLDER = (BIN_FOLDER + "applescript").apply { mkdirs() }
-val FLOW_FOLDER = thisMachine.flowFolder?.let { REGISTERED_FOLDER[it] }
-val KCOMP_FOLDER = FLOW_FOLDER!!.parentFile!!["kcomp"]
+val IDE_FOLDER = REGISTERED_FOLDER["IDE"]
 val DATA_FOLDER = REGISTERED_FOLDER.resolve("data")
 val SOUND_FOLDER = REGISTERED_FOLDER + "sound"
 val LOG_FOLDER = REGISTERED_FOLDER["log"].apply { mkdir() }
 val USER_DIR = MFile(System.getProperty("user.dir"))
 val TEMP_DIR = USER_DIR["tmp"].apply { mkdir() }
-val DNN_FOLDER = when (thisMachine) {
-  NEW_MAC -> REGISTERED_FOLDER["ide/dnn"]
-  OLD_MAC -> REGISTERED_FOLDER["todo/science/dnn"]
-  WINDOWS -> null
-}
-val HEP_FOLDER = when (thisMachine) {
-  NEW_MAC -> REGISTERED_FOLDER["ide/hep"]
-  OLD_MAC -> REGISTERED_FOLDER["todo/science/hep"]
-  WINDOWS -> null
-}
 val WINDOW_GEOMETRY_FOLDER = DATA_FOLDER["window"]
 val SETTINGS_FOLDER = DATA_FOLDER["settings"]
 val VAL_JSON = DATA_FOLDER.resolve("VAL.json")
@@ -83,3 +72,20 @@ val OPEN_NEARST_KOTLIN_DESCENDENT = "OPEN_NEARST_KOTLIN_DESCENDENT"
 //}
 
 
+enum class RootProject {
+  /*not adding more yet because I don't want to select from others in KJG*/
+  flow, kcomp;
+
+  val folder = IDE_FOLDER + name
+}
+
+val DNN_FOLDER = when (thisMachine) {
+  NEW_MAC -> IDE_FOLDER + "dnn"
+  OLD_MAC -> REGISTERED_FOLDER["todo/science/dnn"]
+  WINDOWS -> null
+}
+val HEP_FOLDER = when (thisMachine) {
+  NEW_MAC -> IDE_FOLDER + "hep"
+  OLD_MAC -> REGISTERED_FOLDER["todo/science/hep"]
+  WINDOWS -> null
+}
