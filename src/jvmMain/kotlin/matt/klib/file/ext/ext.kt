@@ -89,7 +89,7 @@ val MFile.abspath: String
 fun MFile.getNextAndClearWhenMoreThan(n: Int, extraExt: String = "itr"): MFile {
   val backupFolder = parentFile
   val allPreviousBackupsOfThis = backupFolder!!.listFiles()!!.filter {
-    it.name.startsWith(this@getNextAndClearWhenMoreThan.name + ".${extraExt}")
+	it.name.startsWith(this@getNextAndClearWhenMoreThan.name + ".${extraExt}")
   }.associateBy { it.name.substringAfterLast(".${extraExt}").toInt() }
 
 
@@ -97,8 +97,8 @@ fun MFile.getNextAndClearWhenMoreThan(n: Int, extraExt: String = "itr"): MFile {
 
 
   allPreviousBackupsOfThis
-    .filterKeys { it < (myBackupI - n) }
-    .forEach { it.value.delete() }
+	.filterKeys { it < (myBackupI - n) }
+	.forEach { it.value.delete() }
 
   return backupFolder.resolve("${this.name}.${extraExt}${myBackupI}").toMFile()
 
@@ -109,24 +109,20 @@ fun MFile.resRepExt(newExt: String) =
 
 fun MFile.deleteIfExists() {
   if (exists()) {
-    if (isDirectory) {
-      deleteRecursively()
-    } else {
-      delete()
-    }
+	if (isDirectory) {
+	  deleteRecursively()
+	} else {
+	  delete()
+	}
   }
 }
 
 
 @Suppress("unused")
 fun Iterable<MFile>.filterHasExtension(ext: String) = filter { it.extension == ext }
+
 @Suppress("unused")
 fun Sequence<MFile>.filterHasExtension(ext: String) = filter { it.extension == ext }
-
-
-
-
-
 
 
 @Suppress("unused")
@@ -148,10 +144,12 @@ val MFile.doesNotExist get() = !exists()
 
 infix fun MFile.withExtension(ext: String): MFile {
   return when (this.extension) {
-    ext  -> this
-    ""   -> MFile(this.path + "." + ext)
-    else -> MFile(this.path.replace("." + this.extension, ".$ext"))
+	ext  -> this
+	""   -> MFile(this.path + "." + ext)
+	else -> MFile(this.path.replace("." + this.extension, ".$ext"))
   }
 }
 
-
+fun MFile.appendln(line: String) {
+  append(line + "\n")
+}
