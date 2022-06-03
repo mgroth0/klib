@@ -68,6 +68,7 @@ val REL_LIBS_VERSIONS_TOML = REL_ROOT_FILES + "libs.versions.toml"
 
 //object CommonFileNames {
 const val DS_STORE = ".DS_Store"
+const val MODULE_INFO_JAVA_NAME = "module-info.java"
 //}
 
 //object KNCommandKeys {
@@ -95,3 +96,4 @@ val HEP_FOLDER = when (thisMachine) {
   OLD_MAC -> REGISTERED_FOLDER["todo/science/hep"]
   WINDOWS -> null
 }
+
