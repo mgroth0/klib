@@ -52,3 +52,10 @@ fun helloKlib(): String = "hello from klib commons"
 
 const val FRONTMOST_APP_NAME = "frontmostAppName"
 const val FILE_TEST = "FILE_TEST"
+
+
+val todos = mutableListOf<String>()
+fun todo(s: String) {
+  todos += s
+  println("todo: $s")
+}
