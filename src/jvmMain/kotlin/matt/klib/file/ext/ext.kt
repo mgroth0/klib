@@ -126,7 +126,7 @@ fun Sequence<MFile>.filterHasExtension(ext: String) = filter { it.extension == e
 
 
 
-fun MFile.recursiveChildren() = recurse { it.listFiles()?.toList() ?: listOf() }
+
 
 
 @Suppress("unused")
