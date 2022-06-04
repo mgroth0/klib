@@ -69,6 +69,7 @@ val REL_LIBS_VERSIONS_TOML = REL_ROOT_FILES + "libs.versions.toml"
 //object CommonFileNames {
 const val DS_STORE = ".DS_Store"
 const val MODULE_INFO_JAVA_NAME = "module-info.java"
+const val BUILDSRC_FILE_NAME = "buildSrc"
 //}
 
 //object KNCommandKeys {

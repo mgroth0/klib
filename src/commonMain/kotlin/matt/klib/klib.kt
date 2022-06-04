@@ -50,8 +50,7 @@ inline fun <T> T.takeUnlessPrintln(msg: String, predicate: (T)->Boolean): T? {
 
 fun helloKlib(): String = "hello from klib commons"
 
-const val FRONTMOST_APP_NAME = "frontmostAppName"
-const val FILE_TEST = "FILE_TEST"
+
 
 
 val todos = mutableSetOf<String>()
