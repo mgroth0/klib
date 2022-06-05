@@ -1,0 +1,1 @@
+enum class ModType { APP, CLAPP, APPLIB, LIB, ABSTRACT, ALL, NO_NATIVE }
