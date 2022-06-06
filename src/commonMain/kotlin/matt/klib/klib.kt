@@ -54,7 +54,9 @@ fun helloKlib(): String = "hello from klib commons"
 
 
 val todos = mutableSetOf<String>()
-fun todo(s: String) {
-  todos += s
-  println("todo: $s")
+fun todo(vararg s: String) {
+  s.forEach {
+	todos += it
+	println("todo: $it")
+  }
 }
