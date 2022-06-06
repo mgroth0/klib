@@ -10,14 +10,17 @@ fun debug(s: Any) {
 }
 
 fun profile(s: Any) {
-    if (PROFILE) {
-        println(s.toString())
-    }
+  if (PROFILE) {
+	println(s.toString())
+  }
 }
 
-private val warned = mutableListOf<Any>()
-fun warn(s: Any) {
-  println("WARNING:${s.toString().uppercase()}")
+val warned = mutableSetOf<Any>()
+fun warn(vararg s: Any) {
+  s.forEach {
+	warned += it
+	println("WARNING:${it.toString().uppercase()}")
+  }
 }
 
 fun warnOnce(s: Any) {
