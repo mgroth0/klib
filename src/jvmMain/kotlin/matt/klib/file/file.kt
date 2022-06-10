@@ -1,6 +1,7 @@
 package matt.klib.file
 
 import matt.klib.str.lower
+import matt.klib.stream.search
 import java.io.File
 import java.io.FileFilter
 import java.io.FilenameFilter
@@ -76,6 +77,11 @@ class MFile(val userPath: String): File(userPath) {
   }
 
   override fun hashCode() = idFile.hashCode()
+
+
+  operator fun contains(other: MFile): Boolean {
+	return other != this && other.search({ takeIf { it == this@MFile } }, { parentFile }) != null
+  }
 }
 //
 ///*I guess its not technically neccesary. But java.if.File is a really bad prefix and "java.io.FileOutputStream" will get get found and I will get yelled at by my validations. Its also a good general reminder that anything having to do with the java filesystem has this huge issue*/
