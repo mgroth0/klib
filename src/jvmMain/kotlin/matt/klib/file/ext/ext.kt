@@ -1,10 +1,12 @@
 package matt.klib.file.ext
 
+import matt.klib.commons.plus
 import matt.klib.file.MFile
 import matt.klib.file.toMFile
 import matt.klib.str.lower
 import java.io.IOException
 import java.nio.file.FileSystems
+import java.nio.file.Files
 import java.nio.file.Path
 
 @Suppress("DEPRECATION") fun createTempDir(prefix: String = "tmp", suffix: String? = null, directory: MFile? = null) =
@@ -153,3 +155,6 @@ infix fun MFile.withExtension(ext: String): MFile {
 fun MFile.appendln(line: String) {
   append(line + "\n")
 }
+
+val MFile.unixNlink get() = Files.getAttribute(this.toPath(), "unix:nlink").toString().toInt()
+val MFile.hardLinkCount get() = unixNlink
