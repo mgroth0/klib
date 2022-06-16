@@ -34,7 +34,7 @@ open class MListIteratorWithSomeMemory<E>(
 
   private var _lastReturned: E? = null
 
-  val lastReturned: E
+  @Suppress("UNCHECKED_CAST") val lastReturned: E
 	get() = if (!hadFirstReturn) err("hasn't returned yet") else _lastReturned as E
 
   override fun next(): E {
