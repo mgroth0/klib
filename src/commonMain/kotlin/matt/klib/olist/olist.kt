@@ -1,5 +1,7 @@
 package matt.klib.olist
 
+import matt.klib.lang.err
+
 
 fun <E> Collection<E>.toBasicObservableList(): BasicObservableList<E> {
   return BasicObservableList(this)
@@ -13,18 +15,57 @@ fun <E> Sequence<E>.toBasicObservableList(): BasicObservableList<E> {
   return BasicObservableList(this.toList())
 }
 
-class BasicObservableList<E>(c: Collection<E> = mutableListOf()): MutableList<E> {
+interface MObservable<T> {
+  fun onChange(listener: (T)->Unit): (T)->Unit
+}
+
+sealed interface ListChange<E>
+class Addition<E>(val added: E): ListChange<E>
+class MultiAddition<E>(val added: Collection<E>): ListChange<E>
+class Removal<E>(val removed: E): ListChange<E>
+class MultiRemoval<E>(val removed: Collection<E>): ListChange<E>
+class Replacement<E>(val removed: E, val added: E): ListChange<E>
+class Clear<E>: ListChange<E>
+
+open class MListIteratorWithSomeMemory<E>(
+  private val itr: MutableListIterator<E>,
+): MutableListIterator<E> by itr {
+  private var hadFirstReturn = false
+
+  private var _lastReturned: E? = null
+
+  val lastReturned: E
+	get() = if (!hadFirstReturn) err("hasn't returned yet") else _lastReturned as E
+
+  override fun next(): E {
+	return itr.next().also {
+	  hadFirstReturn = true
+	  _lastReturned = it
+	}
+  }
+
+  override fun previous(): E {
+	return itr.previous().also {
+	  hadFirstReturn = true
+	  _lastReturned = it
+	}
+  }
+
+}
+
+class BasicObservableList<E>(c: Collection<E> = mutableListOf()): MutableList<E>, MObservable<ListChange<E>> {
 
   private val list = c.toMutableList()
 
 
-  private val listeners = mutableListOf<()->Unit>()
-  fun onChange(op: ()->Unit) {
-	listeners.add(op)
+  private val listeners = mutableListOf<(ListChange<E>)->Unit>()
+  override fun onChange(listener: (ListChange<E>)->Unit): (ListChange<E>)->Unit {
+	listeners.add(listener)
+	return listener
   }
 
-  private fun change() {
-	listeners.forEach { it() }
+  private fun change(change: ListChange<E>) {
+	listeners.forEach { it(change) }
   }
 
 
@@ -51,23 +92,7 @@ class BasicObservableList<E>(c: Collection<E> = mutableListOf()): MutableList<E>
 	return list.isEmpty()
   }
 
-  override fun iterator(): MutableIterator<E> {
-	val mitr = list.listIterator()
-	return object: MutableIterator<E> {
-	  override fun hasNext(): Boolean {
-		return mitr.hasNext()
-	  }
-
-	  override fun next(): E {
-		return mitr.next()
-	  }
-
-	  override fun remove() {
-		mitr.remove()
-		change()
-	  }
-	}
-  }
+  override fun iterator(): MutableIterator<E> = listIterator()
 
   override fun lastIndexOf(element: E): Int {
 	return list.lastIndexOf(element)
@@ -75,118 +100,85 @@ class BasicObservableList<E>(c: Collection<E> = mutableListOf()): MutableList<E>
 
   override fun add(element: E): Boolean {
 	val b = list.add(element)
+	require(b)
 	if (b) {
-	  change()
+	  change(Addition(element))
 	}
 	return b
   }
 
   override fun add(index: Int, element: E) {
 	list.add(index, element)
-	change()
+	change(Addition(element))
   }
 
   override fun addAll(index: Int, elements: Collection<E>): Boolean {
 	val b = list.addAll(index, elements)
-	if (b) change()
+	if (b) change(MultiAddition(elements))
 	return b
   }
 
   override fun addAll(elements: Collection<E>): Boolean {
 	val b = list.addAll(elements)
-	if (b) change()
+	if (b) change(MultiAddition(elements))
 	return b
   }
 
   override fun clear() {
 	list.clear()
-	change()
+	change(Clear())
   }
 
 
-  private fun litr(index: Int? = null): MutableListIterator<E> {
-	val mitr = if (index != null) {
-	  list.listIterator(index)
-	} else list.listIterator()
+  override fun listIterator() = lItr(list.listIterator())
+  override fun listIterator(index: Int) = lItr(list.listIterator(index))
 
-	return object: MutableListIterator<E> {
-	  override fun hasNext(): Boolean {
-		return mitr.hasNext()
-	  }
-
-	  override fun next(): E {
-		return mitr.next()
-	  }
-
-	  override fun remove() {
-		mitr.remove()
-		change()
-	  }
-
-	  override fun hasPrevious(): Boolean {
-		return mitr.hasPrevious()
-	  }
-
-	  override fun nextIndex(): Int {
-		return mitr.nextIndex()
-	  }
-
-	  override fun previous(): E {
-		return mitr.previous()
-	  }
-
-	  override fun previousIndex(): Int {
-		return mitr.previousIndex()
-	  }
-
-	  override fun add(element: E) {
-		mitr.add(element)
-		change()
-	  }
-
-	  override fun set(element: E) {
-		mitr.set(element)
-		change()
-	  }
+  private fun lItr(itr: MutableListIterator<E>) = object: MListIteratorWithSomeMemory<E>(itr) {
+	override fun remove() {
+	  super.remove()
+	  change(Removal(lastReturned))
 	}
-  }
 
-  override fun listIterator(): MutableListIterator<E> {
-	return litr()
-  }
+	override fun add(element: E) {
+	  super.add(element)
+	  change(Addition(element))
+	}
 
-  override fun listIterator(index: Int): MutableListIterator<E> {
-	return litr(index)
+	override fun set(element: E) {
+	  super.set(element)
+	  change(Replacement(lastReturned, element))
+	}
   }
 
   override fun remove(element: E): Boolean {
 	val b = list.remove(element)
-	if (b) change()
+	if (b) change(Removal(element))
 	return b
   }
 
   override fun removeAll(elements: Collection<E>): Boolean {
 	val b = list.removeAll(elements)
-	if (b) change()
+	if (b) change(MultiAddition(elements))
 	return b
   }
 
   override fun removeAt(index: Int): E {
 	val e = list.removeAt(index)
-	change()
+	change(Removal(e))
 	return e
   }
 
   override fun retainAll(elements: Collection<E>): Boolean {
+	val toRemove = list.filter { it !in elements }
 	val b = list.retainAll(elements)
-	if (b) change()
+	if (b) change(MultiRemoval(toRemove))
 	return b
   }
 
   override fun set(index: Int, element: E): E {
-	val e = list.set(index, element)
-	change()
-	return e
+	val oldElement = list.set(index, element)
+	change(Replacement(removed = oldElement, added = element))
+	return oldElement
   }
 
   override fun subList(fromIndex: Int, toIndex: Int): MutableList<E> {
