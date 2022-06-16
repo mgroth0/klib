@@ -17,6 +17,8 @@ fun <E> Sequence<E>.toBasicObservableList(): BasicObservableList<E> {
 
 interface MObservable<T> {
   fun onChange(listener: (T)->Unit): (T)->Unit
+  fun onChangeUntil(until: (T)->Boolean, listener: (T)->Unit)
+  fun onChangeOnce(listener: (T)->Unit) = onChangeUntil({ true }, listener)
 }
 
 sealed interface CollectionChange<E>
@@ -66,6 +68,15 @@ abstract class BasicObservableCollection<E>: MObservable<CollectionChange<E>>, C
 
   protected fun change(change: CollectionChange<E>) {
 	listeners.forEach { it(change) }
+  }
+
+  override fun onChangeUntil(until: (CollectionChange<E>)->Boolean, listener: (CollectionChange<E>)->Unit) {
+	var realListener: ((CollectionChange<E>)->Unit)? = null
+	realListener = { t: CollectionChange<E> ->
+	  listener(t)
+	  if (until(t)) listeners -= realListener!!
+	}
+	listeners += realListener
   }
 }
 
