@@ -57,7 +57,7 @@ open class MListIteratorWithSomeMemory<E>(
   }
 }
 
-abstract class BasicObservableCollection<E>: MObservable<CollectionChange<E>> {
+abstract class BasicObservableCollection<E>: MObservable<CollectionChange<E>>, Collection<E> {
   private val listeners = mutableListOf<(CollectionChange<E>)->Unit>()
   override fun onChange(listener: (CollectionChange<E>)->Unit): (CollectionChange<E>)->Unit {
 	listeners.add(listener)
