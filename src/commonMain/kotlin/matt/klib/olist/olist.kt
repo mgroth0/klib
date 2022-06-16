@@ -19,20 +19,20 @@ interface MObservable<T> {
   fun onChange(listener: (T)->Unit): (T)->Unit
 }
 
-sealed interface ListChange<E>
-class Addition<E>(val added: E): ListChange<E>
-class MultiAddition<E>(val added: Collection<E>): ListChange<E>
-class Removal<E>(val removed: E): ListChange<E>
-class MultiRemoval<E>(val removed: Collection<E>): ListChange<E>
-class Replacement<E>(val removed: E, val added: E): ListChange<E>
-class Clear<E>: ListChange<E>
+sealed interface CollectionChange<E>
+class Addition<E>(val added: E): CollectionChange<E>
+class MultiAddition<E>(val added: Collection<E>): CollectionChange<E>
+class Removal<E>(val removed: E): CollectionChange<E>
+class MultiRemoval<E>(val removed: Collection<E>): CollectionChange<E>
+class Replacement<E>(val removed: E, val added: E): CollectionChange<E>
+class Clear<E>: CollectionChange<E>
 
-open class MListIteratorWithSomeMemory<E>(
-  private val itr: MutableListIterator<E>,
-): MutableListIterator<E> by itr {
-  private var hadFirstReturn = false
+open class MIteratorWithSomeMemory<E>(
+  protected open val itr: MutableIterator<E>,
+): MutableIterator<E> by itr {
+  protected var hadFirstReturn = false
 
-  private var _lastReturned: E? = null
+  protected var _lastReturned: E? = null
 
   @Suppress("UNCHECKED_CAST") val lastReturned: E
 	get() = if (!hadFirstReturn) err("hasn't returned yet") else _lastReturned as E
@@ -43,30 +43,35 @@ open class MListIteratorWithSomeMemory<E>(
 	  _lastReturned = it
 	}
   }
+}
 
+@Suppress("DELEGATED_MEMBER_HIDES_SUPERTYPE_OVERRIDE")
+open class MListIteratorWithSomeMemory<E>(
+  override val itr: MutableListIterator<E>,
+): MIteratorWithSomeMemory<E>(itr), MutableListIterator<E> by itr {
   override fun previous(): E {
 	return itr.previous().also {
 	  hadFirstReturn = true
 	  _lastReturned = it
 	}
   }
-
 }
 
-class BasicObservableList<E>(c: Collection<E> = mutableListOf()): MutableList<E>, MObservable<ListChange<E>> {
-
-  private val list = c.toMutableList()
-
-
-  private val listeners = mutableListOf<(ListChange<E>)->Unit>()
-  override fun onChange(listener: (ListChange<E>)->Unit): (ListChange<E>)->Unit {
+abstract class BasicObservableCollection<E>: MObservable<CollectionChange<E>> {
+  private val listeners = mutableListOf<(CollectionChange<E>)->Unit>()
+  override fun onChange(listener: (CollectionChange<E>)->Unit): (CollectionChange<E>)->Unit {
 	listeners.add(listener)
 	return listener
   }
 
-  private fun change(change: ListChange<E>) {
+  protected fun change(change: CollectionChange<E>) {
 	listeners.forEach { it(change) }
   }
+}
+
+class BasicObservableList<E>(c: Collection<E> = mutableListOf()): BasicObservableCollection<E>(), MutableList<E> {
+
+  private val list = c.toMutableList()
 
 
   override val size: Int
