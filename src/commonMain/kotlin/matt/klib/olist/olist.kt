@@ -13,7 +13,7 @@ fun <E> Sequence<E>.toBasicObservableList(): BasicObservableList<E> {
   return BasicObservableList(this.toList())
 }
 
-class BasicObservableList<E>(c: Collection<E>): MutableList<E> {
+class BasicObservableList<E>(c: Collection<E> = mutableListOf()): MutableList<E> {
 
   private val list = c.toMutableList()
 
