@@ -13,7 +13,7 @@ fun <E> Sequence<E>.toBasicObservableSet(): BasicObservableSet<E> {
     return BasicObservableSet(this.toSet())
 }
 
-class BasicObservableSet<E>(c: Collection<E>) : MutableSet<E> {
+class BasicObservableSet<E>(c: Collection<E> = mutableSetOf()) : MutableSet<E> {
 
     private val theSet = c.toMutableSet()
 
