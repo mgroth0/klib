@@ -1,7 +1,6 @@
 package matt.klib.lang
 
 import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.InvocationKind
 import kotlin.contracts.InvocationKind.AT_LEAST_ONCE
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
 import kotlin.contracts.contract
@@ -64,7 +63,7 @@ inline fun <T: Any> T.alsoPrintln(op: T.()->String): T {
 @ExperimentalContracts
 inline fun <T: Any> T.go(block: (T)->Unit) {
   contract {
-	callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+	callsInPlace(block, EXACTLY_ONCE)
   }
   block(this)
 }
@@ -73,7 +72,7 @@ inline fun <T: Any> T.go(block: (T)->Unit) {
 @ExperimentalContracts
 inline fun <T: Any> T.applyIt(block: T.(T)->Unit): T {
   contract {
-	callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+	callsInPlace(block, EXACTLY_ONCE)
   }
   block(this)
   return this
