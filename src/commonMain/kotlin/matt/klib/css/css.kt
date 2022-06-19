@@ -544,7 +544,11 @@ interface ColorLike
 
 @Serializable
 enum class Color: ColorLike {
-  black, white, blue, red, orange, green, aqua, grey, purple, violet, yellow;
+
+  black,
+
+
+  white, blue, red, orange, green, aqua, grey, purple, violet, yellow;
 
   override fun toString() = name
 }
