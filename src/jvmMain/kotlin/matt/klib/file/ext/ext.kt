@@ -1,10 +1,8 @@
 package matt.klib.file.ext
 
-import matt.klib.commons.plus
 import matt.klib.file.MFile
 import matt.klib.file.toMFile
 import matt.klib.str.lower
-import java.io.IOException
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
