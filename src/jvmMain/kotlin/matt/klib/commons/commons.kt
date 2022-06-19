@@ -1,7 +1,6 @@
 package matt.klib.commons
 
 import matt.klib.file.MFile
-import matt.klib.file.ext.resolve
 import matt.klib.sys.NEW_MAC
 import matt.klib.sys.OLD_MAC
 import matt.klib.sys.WINDOWS
@@ -80,7 +79,7 @@ val OPEN_NEARST_KOTLIN_DESCENDENT = "OPEN_NEARST_KOTLIN_DESCENDENT"
 //}
 
 
-enum class RootProject {
+enum class RootProjects {
   /*not adding more yet because I don't want to select from others in KJG*/
   flow, kcomp;
 

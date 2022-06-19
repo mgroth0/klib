@@ -6,24 +6,17 @@ import java.io.File
 import java.io.FileFilter
 import java.io.FilenameFilter
 import java.net.URI
+import java.nio.file.Files
 
 
 fun File.toMFile() = MFile(this)
 
 /*mac file, matt file, whatever*/
-/*sadly this is necessary. Java.io.file is an absolute failure because it doesn't respect Mac os's case sensitivity rules
+/*sadly this is necessary. Java.io.file is an absolute failure because it doesn't respect Mac OSX's case sensitivity rules
   I'm actually shocked it took me so long to figure this out*/
 
-
-//class FixedFile(s: String): MFile(s) {
-//  init {
-//	MFile.separatorChar
-//  }
-//}
-
-
 /*TODO: SUBCLASS IS PROBABLAMATIC BEACUASE OF THE BUILTIN KOTLIN `RESOLVES` FUNCTION (can I disable or override it? maybe in unnamed package?) WHICH SECRETLY TURNS THIS BACK INTO A REGULAR FILE*/
-/*TODO:  NOT SUBCLASS FILE IS PROBLEMATIC BECAUSE I NEED TONS OF BOILERPLATE SINCE THE FILE CLASS HAS SO MANY METHODS, EXTENSION METHODS, CLASSES, AND LIBRARIES IT WORKS WITH*/
+/*TODO:  NOT SUBCLASSING JAVA.FILE IS PROBLEMATIC BECAUSE I NEED TONS OF BOILERPLATE SINCE THE FILE CLASS HAS SO MANY METHODS, EXTENSION METHODS, CLASSES, AND LIBRARIES IT WORKS WITH*/
 class MFile(val userPath: String): File(userPath) {
   val userFile = File(this.path)
 
@@ -86,23 +79,121 @@ class MFile(val userPath: String): File(userPath) {
 	  }
 	}, { parentFile?.toMFile() }) != null
   }
+
+
+
+  /*MUST KEEP THESE METHODS HERE AND NOT AS EXTENSIONS IN ORDER TO ROBUSTLY OVERRIDE KOTLIN.STDLIB'S DEFAULT FILE EXTENSIONS. OTHERWISE, I'D HAVE TO MICROMANAGE MY IMPORTS TO MAKE SURE I'M IMPORTING THE CORRECT EXTENSIONS*/
+
+
+  fun relativeTo(base: MFile): MFile = idFile.relativeTo(base.idFile).toMFile()
+
+
+
+
+  fun startsWith(other: MFile): Boolean = idFile.startsWith(other.idFile)
+  fun startsWith(other: String): Boolean = idFile.startsWith(other.lower())
+  fun endsWith(other: MFile) = idFile.endsWith(other.idFile)
+  fun endsWith(other: String): Boolean = idFile.endsWith(other.lower())
+
+
+  fun resolve(relative: MFile): MFile = userFile.resolve(relative).toMFile()
+  fun resolve(relative: String): MFile = userFile.resolve(relative).toMFile()
+
+
+  fun resolveSibling(relative: MFile) = userFile.resolveSibling(relative).toMFile()
+
+
+  fun resolveSibling(relative: String): MFile = userFile.resolveSibling(relative).toMFile()
+
+  fun mkparents() = parentFile!!.mkdirs()
+
+
+
+  var text
+	get() = readText()
+	set(v) {
+	  mkparents()
+	  writeText(v)
+	}
+
+
+  fun isBlank() = bufferedReader().run {
+	val r = read() == -1
+	close()
+	r
+  }
+
+  fun isImage() = extension in listOf("png", "jpg", "jpeg")
+
+  fun append(s: String, mkdirs: Boolean = true) {
+	if (mkdirs) mkparents()
+	appendText(s)
+  }
+
+  fun write(s: String, mkparents: Boolean = true) {
+	if (mkparents) mkparents()
+	writeText(s)
+  }
+
+  @Suppress("unused")
+  val fname: String
+	get() = name
+  val abspath: String
+	get() = absolutePath
+
+
+  fun getNextAndClearWhenMoreThan(n: Int, extraExt: String = "itr"): MFile {
+	val backupFolder = parentFile
+	val allPreviousBackupsOfThis = backupFolder!!.listFiles()!!.filter {
+	  it.name.startsWith(this@MFile.name + ".${extraExt}")
+	}.associateBy { it.name.substringAfterLast(".${extraExt}").toInt() }
+
+
+	val myBackupI = (allPreviousBackupsOfThis.keys.maxOrNull() ?: 0) + 1
+
+
+	allPreviousBackupsOfThis
+	  .filterKeys { it < (myBackupI - n) }
+	  .forEach { it.value.delete() }
+
+	return backupFolder.resolve("${this.name}.${extraExt}${myBackupI}").toMFile()
+
+  }
+
+  fun resRepExt(newExt: String) =
+	MFile(parentFile!!.absolutePath + separator + nameWithoutExtension + "." + newExt)
+
+  fun deleteIfExists() {
+	if (exists()) {
+	  if (isDirectory) {
+		deleteRecursively()
+	  } else {
+		delete()
+	  }
+	}
+  }
+
+
+  val doesNotExist get() = !exists()
+
+
+  infix fun withExtension(ext: String): MFile {
+	return when (this.extension) {
+	  ext  -> this
+	  ""   -> MFile(this.path + "." + ext)
+	  else -> MFile(this.path.replace("." + this.extension, ".$ext"))
+	}
+  }
+
+  fun appendln(line: String) {
+	append(line + "\n")
+  }
+
+  val unixNlink get() = Files.getAttribute(this.toPath(), "unix:nlink").toString().toInt()
+  val hardLinkCount get() = unixNlink
+
+
 }
-//
-///*I guess its not technically neccesary. But java.if.File is a really bad prefix and "java.io.FileOutputStream" will get get found and I will get yelled at by my validations. Its also a good general reminder that anything having to do with the java filesystem has this huge issue*/
-//@Suppress("unused", "DELEGATED_MEMBER_HIDES_SUPERTYPE_OVERRIDE")
-//class MFileOutputStream(private val fOut: FileOutputStream): java.io.OutputStream(), Closeable by fOut,
-//															 Flushable by fOut {
-//  override fun write(b: Int) {
-//	fOut.write(b)
-//  }
-//}
-//
-
-
-
-
-
-
 
 
 
