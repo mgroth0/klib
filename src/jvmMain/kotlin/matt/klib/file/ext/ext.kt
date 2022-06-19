@@ -16,9 +16,9 @@ import java.nio.file.Path
 @Suppress("DEPRECATION") fun createTempFile(prefix: String = "tmp", suffix: String? = null, directory: MFile? = null) =
   kotlin.io.createTempFile(prefix, suffix, directory).toMFile()
 
-fun MFile.relativeTo(base: MFile): MFile = userFile.relativeTo(base.userFile).toMFile()
-fun MFile.relativeToOrSelf(base: MFile): MFile = userFile.relativeToOrSelf(base.userFile).toMFile()
-fun MFile.relativeToOrNull(base: MFile): MFile? = userFile.relativeToOrNull(base.userFile)?.toMFile()
+fun MFile.relativeTo(base: MFile): MFile = idFile.relativeTo(base.idFile).toMFile()
+fun MFile.relativeToOrSelf(base: MFile): MFile = idFile.relativeToOrSelf(base.idFile).toMFile()
+fun MFile.relativeToOrNull(base: MFile): MFile? = idFile.relativeToOrNull(base.idFile)?.toMFile()
 fun MFile.copyTo(target: MFile, overwrite: Boolean = false, bufferSize: Int = DEFAULT_BUFFER_SIZE): MFile =
   userFile.copyTo(target, overwrite, bufferSize).toMFile()
 

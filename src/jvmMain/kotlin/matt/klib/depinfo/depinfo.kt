@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 )
 
 @Serializable data class SubProject(
-  val folder: String,
+  val folderAbsPath: String,
   val configurations: MutableList<Configuration> = mutableListOf()
 )
 
