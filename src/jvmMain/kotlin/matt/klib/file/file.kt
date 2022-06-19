@@ -82,9 +82,7 @@ class MFile(val userPath: String): File(userPath) {
   operator fun contains(other: MFile): Boolean {
 	return other != this && other.search({
 	  takeIf {
-		val b = it == this@MFile
-//		println("does ${it} == ${this@MFile}? ${b}")
-		b
+		it == this@MFile
 	  }
 	}, { parentFile?.toMFile() }) != null
   }
