@@ -16,8 +16,22 @@ import kotlinx.serialization.Serializable
   val dependencies: MutableList<Dependency> = mutableListOf()
 )
 
-@Serializable data class Dependency(
-  val group: String,
-  val name: String,
-  val configurations: MutableList<Configuration> = mutableListOf()
-)
+@Serializable
+sealed interface Dependency {
+  val group: String
+  val name: String
+  val configurations: MutableList<Configuration>
+}
+
+@Serializable data class LibDependency(
+  override val group: String,
+  override val name: String,
+  override val configurations: MutableList<Configuration> = mutableListOf()
+): Dependency
+
+@Serializable data class ProjectDependency(
+  override val group: String,
+  override val name: String,
+  override val configurations: MutableList<Configuration> = mutableListOf(),
+  val projectDirAbsPath: String
+): Dependency
