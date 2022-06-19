@@ -52,7 +52,7 @@ val DATA_FOLDER = REGISTERED_FOLDER.resolve("data")
 val SOUND_FOLDER = REGISTERED_FOLDER + "sound"
 val LOG_FOLDER = REGISTERED_FOLDER["log"].apply { mkdir() }
 val USER_DIR = MFile(System.getProperty("user.dir"))
-val TEMP_DIR = USER_DIR["tmp"].apply { mkdir() }
+val TEMP_DIR by lazy { USER_DIR["tmp"].apply { mkdir() } }
 val WINDOW_GEOMETRY_FOLDER = DATA_FOLDER["window"]
 val SETTINGS_FOLDER = DATA_FOLDER["settings"]
 val VAL_JSON = DATA_FOLDER.resolve("VAL.json")
