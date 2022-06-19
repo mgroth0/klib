@@ -4,7 +4,6 @@ modtype = NO_NATIVE
 
 repositories {
   mavenCentral()
-  maven(url = "https://mvnrepository.com/repos/space-kotlinx-html-maven")
   maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
 }
 
