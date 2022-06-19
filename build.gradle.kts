@@ -2,6 +2,28 @@
 
 modtype = NO_NATIVE
 
+repositories {
+  mavenCentral()
+  maven(url = "https://mvnrepository.com/repos/space-kotlinx-html-maven")
+  maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
+}
+
+dependencies {
+  //  commonMainCompileOnly(libs.kotlinx.html.common)
+  commonMainImplementation(libs.kotlinx.html.common)
+  //  jsMainApi(libs.kotlinx.html.js)
+  jsMainImplementation(libs.kotlinx.html.js)
+  //  jvmMainApi(libs.kotlinx.html.jvm)
+  jvmMainImplementation(libs.kotlinx.html.jvm)
+}
+
+//implementations(
+//
+//)
+//implementations(
+//  implementation("org.jetbrains.kotlinx:kotlinx-html-common:0.7.3")
+//)
+
 plugins {
   kotlin("plugin.serialization")
 
