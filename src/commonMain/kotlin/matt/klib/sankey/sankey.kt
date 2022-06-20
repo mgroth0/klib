@@ -36,6 +36,8 @@ fun sankeyHTML(code: String): String {
   return h.finalize()
 }
 
+annotation class Language(val id: String)
+
 @Language("JavaScript")
 fun sankeyJS(code: String) = """
      google.charts.matt.gui.ser.load('current', {'packages':['sankey']});
