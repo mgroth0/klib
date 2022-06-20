@@ -10,6 +10,7 @@ import kotlinx.html.stream.createHTML
 import matt.klib.css.px
 import matt.klib.css.sty
 
+@Suppress("DEPRECATION")
 fun sankeyHTML(code: String): String {
   val h = createHTML()
   h.html {
@@ -58,7 +59,7 @@ fun sankeyJS(code: String) = """
 
           // Sets chart options.
           var options = {
-            width: 600,
+            width: 600
           };
 
           // Instantiates and draws our chart, passing in some options.
