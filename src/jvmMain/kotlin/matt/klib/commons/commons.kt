@@ -85,6 +85,7 @@ enum class RootProjects {
   flow, kcomp;
 
   val folder = IDE_FOLDER + name
+  val subRootFolders = listOf(folder + "KJ", folder + "k")
 }
 
 val DNN_FOLDER = when (thisMachine) {
