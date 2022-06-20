@@ -55,8 +55,8 @@ val USER_DIR = MFile(System.getProperty("user.dir"))
 val TEMP_DIR by lazy { REGISTERED_FOLDER["tmp"].apply { mkdir() } }
 val WINDOW_GEOMETRY_FOLDER = DATA_FOLDER["window"]
 val SETTINGS_FOLDER = DATA_FOLDER["settings"]
-val VAL_JSON = DATA_FOLDER.resolve("VAL.json")
-val VAR_JSON = DATA_FOLDER["VAR.json"]
+val VAL_JSON_FILE = DATA_FOLDER.resolve("VAL.json")
+val VAR_JSON_FILE = DATA_FOLDER["VAR.json"]
 val SCREENSHOT_FOLDER = REGISTERED_FOLDER["screenshots"]
 val CACHE_FOLDER = REGISTERED_FOLDER["cache"]
 val KJG_DATA_FOLDER = DATA_FOLDER.resolve("kjg")
