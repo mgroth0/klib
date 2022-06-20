@@ -26,12 +26,14 @@ sealed interface Dependency {
 @Serializable data class LibDependency(
   override val group: String,
   override val name: String,
+): Dependency {
   override val configurations: MutableList<Configuration> = mutableListOf()
-): Dependency
+}
 
 @Serializable data class ProjectDependency(
   override val group: String,
   override val name: String,
-  override val configurations: MutableList<Configuration> = mutableListOf(),
   val projectDirAbsPath: String
-): Dependency
+): Dependency {
+  override val configurations: MutableList<Configuration> = mutableListOf()
+}
