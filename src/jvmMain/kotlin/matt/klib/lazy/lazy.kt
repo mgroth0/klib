@@ -41,10 +41,12 @@ private class SynchronizedLazyWithInitializerArg<A, T>(initializer: (A)->T): Laz
   }
 }
 
-fun <A, T> lazyWithReciever(initializer: (A)->T): LazyWithReceiver<A, T> = SynchronizedLazyWithInitializerReceiver(initializer)
+fun <A, T> lazyWithReceiver(initializer: A.()->T): LazyWithReceiver<A, T> =
+  SynchronizedLazyWithInitializerReceiver(initializer)
 
 interface LazyWithReceiver<A, T> {
   fun getValueWithReceiver(a: A): T
+
   @Suppress("UNCHECKED_CAST")
   operator fun getValue(thisRef: A?, property: KProperty<*>): T = getValueWithReceiver(thisRef as A)
 }
@@ -55,7 +57,7 @@ private class SynchronizedLazyWithInitializerReceiver<A, T>(initializer: (A)->T)
 	private object MY_UNINITIALIZED_VALUE
   }
 
-  private var initializer: ((A)->T)? = initializer
+  private var initializer: (A.()->T)? = initializer
   @Volatile private var _value: Any? = MY_UNINITIALIZED_VALUE
   private val lock = this
 
