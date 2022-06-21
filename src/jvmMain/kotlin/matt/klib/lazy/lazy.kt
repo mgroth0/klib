@@ -45,6 +45,7 @@ fun <A, T> lazyWithReciever(initializer: (A)->T): LazyWithReceiver<A, T> = Synch
 
 interface LazyWithReceiver<A, T> {
   fun getValueWithReceiver(a: A): T
+  @Suppress("UNCHECKED_CAST")
   operator fun getValue(thisRef: A?, property: KProperty<*>): T = getValueWithReceiver(thisRef as A)
 }
 
