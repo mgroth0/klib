@@ -7,6 +7,8 @@ repositories {
   maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
 }
 
+
+
 dependencies {
 
 //  commonMainCompileOnly("org.jetbrains:annotations:20.0.0")
@@ -14,6 +16,9 @@ dependencies {
 //  compileOnly()
 
   //  commonMainCompileOnly(libs.kotlinx.html.common)
+
+  commonMainImplementation(libs.kotlinx.serialization.json)
+
   commonMainImplementation(libs.kotlinx.html.common)
   //  jsMainApi(libs.kotlinx.html.js)
   jsMainImplementation(libs.kotlinx.html.js)
