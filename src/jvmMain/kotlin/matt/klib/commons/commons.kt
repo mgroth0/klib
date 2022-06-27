@@ -47,6 +47,7 @@ val REGISTERED_FOLDER = USER_HOME[thisMachine.registeredDir]
 val BIN_FOLDER = REGISTERED_FOLDER + "bin"
 val APPLESCRIPT_FOLDER = (BIN_FOLDER + "applescript").apply { mkdirs() }
 val IDE_FOLDER = REGISTERED_FOLDER["IDE"]
+val APPLICATIONS_FOLDER = MFile("/Applications")
 val DATA_FOLDER = REGISTERED_FOLDER.resolve("data")
 val SOUND_FOLDER = REGISTERED_FOLDER + "sound"
 val LOG_FOLDER = REGISTERED_FOLDER["log"].apply { mkdir() }
