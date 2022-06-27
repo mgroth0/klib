@@ -10,6 +10,7 @@ import matt.klib.hyphonizedToCamelCase
 import matt.klib.lang.inList
 import matt.klib.str.lower
 import matt.klib.str.toIntOrNullIfBlank
+import kotlin.js.JsName
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
@@ -18,9 +19,11 @@ import kotlin.reflect.KProperty
 
 
 val CommonAttributeGroupFacade.sty get() = HTMLDslStyleDSL(this)
-fun CommonAttributeGroupFacade.sty(op: MyStyleDsl.()->Unit) = HTMLDslStyleDSL(this).op()
+fun CommonAttributeGroupFacade.sty(op: CssStyleDSL.()->Unit) = HTMLDslStyleDSL(this).op()
 
-class HTMLDslStyleDSL(val tag: CommonAttributeGroupFacade): MyStyleDsl() {
+class HTMLDslStyleDSL(val tag: CommonAttributeGroupFacade): CssStyleDSL() {
+
+
   companion object {
 	private const val STYLE_KEY = "style"
   }
@@ -31,12 +34,13 @@ class HTMLDslStyleDSL(val tag: CommonAttributeGroupFacade): MyStyleDsl() {
 	  tag.style += " ${key}: $value;"
 	}
   }
-
   override fun get(key: String): String {
 	TODO("Not yet implemented")
   }
-
   override fun remove(key: String) {
+	TODO("Not yet implemented")
+  }
+  override fun clear() {
 	TODO("Not yet implemented")
   }
 }
@@ -45,18 +49,77 @@ class HTMLDslStyleDSL(val tag: CommonAttributeGroupFacade): MyStyleDsl() {
 @DslMarker
 annotation class StyleDSLMarker
 
+
+
 @StyleDSLMarker
 abstract class MyStyleDsl {
 
   abstract operator fun set(key: String, value: Any)
   abstract operator fun get(key: String): String
   abstract fun remove(key: String)
+  abstract fun clear()
+
+
+
+  protected class px<R: MyStyleDsl> {
+	  operator fun getValue(thisRef: R, property: KProperty<*>): Px? {
+		val s = thisRef[property.name.hyphenize()]
+		return s.toPxOrNullIfBlank()
+	  }
+
+	  operator fun setValue(thisRef: R, property: KProperty<*>, value: Px?) {
+		if (value == null) thisRef.remove(property.name.hyphenize())
+		else thisRef[property.name.hyphenize()] = value
+	  }
+	}
+
+  @JsName("lengthProp")
+  protected class length<R: MyStyleDsl> {
+	  operator fun getValue(thisRef: R, property: KProperty<*>): Length? {
+		val s = thisRef[property.name.hyphenize()]
+		if (s.isBlank()) return null
+		else if ("px" in s) return s.toPx()
+		return s.toPercent()
+	  }
+	  operator fun setValue(thisRef: R, property: KProperty<*>, value: Length?) {
+		if (value == null) thisRef.remove(property.name.hyphenize())
+		else thisRef[property.name.hyphenize()] = value
+	  }
+	}
+  @OptIn(InternalSerializationApi::class)
+  protected class  e<E: Enum<E>, R: MyStyleDsl>(val eCls: KClass<E>) {
+	operator fun getValue(thisRef: R, property: KProperty<*>): E? {
+	  val s = thisRef[property.name.hyphenize()].hyphonizedToCamelCase().takeIf { it.isNotBlank() } ?: return null
+	  return Json.decodeFromString(eCls.serializer(), "\"$s\"")
+	}
+
+	operator fun setValue(thisRef: R, property: KProperty<*>, value: E?) {
+	  if (value == null)  (thisRef).remove(property.name.hyphenize())
+	  else thisRef[property.name.hyphenize()] = value.name.hyphenize()
+	}
+  }
+
+
+
+  protected class custom<T, R: MyStyleDsl>(val fromString: String.()->T, val toStringable: (T & Any).()->Any = { this }) {
+	operator fun getValue(thisRef: R, property: KProperty<*>): T {
+	  return fromString(thisRef[property.name.hyphenize()])
+	}
+
+	operator fun setValue(thisRef: R, property: KProperty<*>, value: T) {
+	  if (value == null) thisRef.remove(property.name.hyphenize())
+	  else thisRef[property.name.hyphenize()] = toStringable(value)
+	}
+  }
+}
+
+abstract class CssStyleDSL: MyStyleDsl() {
 
   var color: ColorLike? by custom({
 	if ("linear-gradient" in this) LinearGradient(this) else Color.valueOf(this)
   })
   var textAlign by e(TextAlign::class)
-  var lineHeight by length
+  var lineHeight by length()
 
 
   var background: ColorLike? by custom({
@@ -78,8 +141,8 @@ abstract class MyStyleDsl {
 	  else this["vertical-align"] = value
 	}
 
-  var width by length
-  var height by length
+  var width by length()
+  var height by length()
   var zIndex: Int
 	get() = this["z-index"].toInt()
 	set(value) {
@@ -103,7 +166,7 @@ abstract class MyStyleDsl {
   var borderWidth by e(BorderWidth::class)
   var fontStyle by e(FontStyle::class)
   var fontWeight by e(FontWeight::class)
-  var fontSize by px
+  var fontSize by px()
   var marginLeft: Margin? by custom({
 	if (this == auto::class.simpleName!!) auto else toPxOrNullIfBlank()
   })
@@ -131,66 +194,10 @@ abstract class MyStyleDsl {
   var padding: Margin? by custom({
 	if (this == auto::class.simpleName!!) auto else toPxOrNullIfBlank()
   })
-  var top by length
-  var bottom by length
-  var left by length
-  var right by length
-
-
-  private val px
-	get() = object {
-	  operator fun getValue(thisRef: MyStyleDsl, property: KProperty<*>): Px? {
-		val s = thisRef[property.name.hyphenize()]
-		return s.toPxOrNullIfBlank()
-	  }
-
-	  operator fun setValue(thisRef: MyStyleDsl, property: KProperty<*>, value: Px?) {
-		if (value == null) thisRef.remove(property.name.hyphenize())
-		else thisRef[property.name.hyphenize()] = value
-	  }
-	}
-
-  private val length
-	get() = object {
-	  operator fun getValue(thisRef: MyStyleDsl, property: KProperty<*>): Length? {
-		val s = thisRef[property.name.hyphenize()]
-		if (s.isBlank()) return null
-		else if ("px" in s) return s.toPx()
-		return s.toPercent()
-	  }
-
-	  operator fun setValue(thisRef: MyStyleDsl, property: KProperty<*>, value: Length?) {
-		if (value == null) thisRef.remove(property.name.hyphenize())
-		else thisRef[property.name.hyphenize()] = value
-	  }
-
-
-	}
-
-  private fun <T> custom(fromString: String.()->T, toStringable: T.()->Any = { this as Any }) = object {
-	operator fun getValue(thisRef: MyStyleDsl, property: KProperty<*>): T {
-	  return fromString(thisRef[property.name.hyphenize()])
-	}
-
-	operator fun setValue(thisRef: MyStyleDsl, property: KProperty<*>, value: T) {
-	  if (value == null) thisRef.remove(property.name.hyphenize())
-	  else thisRef[property.name.hyphenize()] = toStringable(value)
-	}
-  }
-
-
-  @OptIn(InternalSerializationApi::class)
-  private fun <E: Enum<E>> e(eCls: KClass<E>) = object {
-	operator fun getValue(thisRef: MyStyleDsl, property: KProperty<*>): E? {
-	  val s = thisRef[property.name.hyphenize()].hyphonizedToCamelCase().takeIf { it.isNotBlank() } ?: return null
-	  return Json.decodeFromString(eCls.serializer(), "\"$s\"")
-	}
-
-	operator fun setValue(thisRef: MyStyleDsl, property: KProperty<*>, value: E?) {
-	  if (value == null) thisRef.remove(property.name.hyphenize())
-	  else thisRef[property.name.hyphenize()] = value.name.hyphenize()
-	}
-  }
+  var top by length()
+  var bottom by length()
+  var left by length()
+  var right by length()
 
 
   var transform: Transform

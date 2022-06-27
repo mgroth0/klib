@@ -237,3 +237,20 @@ inline val <reified T: Any> KClass<T>.jDefault: T?
 //@Suppress("UnusedReceiverParameter") val KClass<Char>.jDefault: Char get() = '\u0000'
 //@Suppress("UnusedReceiverParameter") val KClass<Short>.jDefault: Short get() = 0
 
+
+fun noExceptions(op: ()->Unit): Boolean {
+  return try {
+    op()
+    true
+  } catch (e: Exception) {
+    false
+  }
+}
+
+fun <R> nullIfExceptions(op: ()->R): R? {
+  return try {
+    op()
+  } catch (e: Exception) {
+    null
+  }
+}

@@ -93,23 +93,23 @@ fun tab(a: Any) {
 }
 
 
-fun taball(itr: DoubleArray) {
-  itr.forEach {
-	println("\t${it}")
-  }
-}
+//fun taball(itr: DoubleArray) {
+//  itr.forEach {
+//	println("\t${it}")
+//  }
+//}
 
-fun taball(itr: Array<*>) {
-  itr.forEach {
-	println("\t${it}")
-  }
-}
-
-fun taball(itr: Iterable<*>) {
-  itr.forEach {
-	println("\t${it}")
-  }
-}
+//fun taball(itr: Array<*>) {
+//  itr.forEach {
+//	println("\t${it}")
+//  }
+//}
+//
+//fun taball(itr: Iterable<*>) {
+//  itr.forEach {
+//	println("\t${it}")
+//  }
+//}
 
 
 fun taball(s: String, itr: Collection<*>) {
@@ -120,6 +120,13 @@ fun taball(s: String, itr: Collection<*>) {
 }
 
 fun taball(s: String, itr: DoubleArray) {
+  println("$s(len=${itr.size}):")
+  itr.forEach {
+	println("\t${it}")
+  }
+}
+
+fun taball(s: String, itr: Array<*>) {
   println("$s(len=${itr.size}):")
   itr.forEach {
 	println("\t${it}")
@@ -245,3 +252,5 @@ class StringLineBuilder(private var s: String) {
 	s += "\n\t$a"
   }
 }
+
+fun <T> T?.orBlank(op: (T)->String = { toString() }) = this?.let { op(it) } ?: ""
