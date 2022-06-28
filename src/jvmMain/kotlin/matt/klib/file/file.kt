@@ -1,5 +1,6 @@
 package matt.klib.file
 
+import matt.klib.dmap.withStoringDefault
 import matt.klib.str.lower
 import matt.klib.stream.search
 import java.io.File
@@ -7,9 +8,10 @@ import java.io.FileFilter
 import java.io.FilenameFilter
 import java.net.URI
 import java.nio.file.Files
+import kotlin.reflect.KClass
 
 
-fun File.toMFile() = MFile(this)
+fun File.toMFile() = mFile(this)
 
 /*mac file, matt file, whatever*/
 /*sadly this is necessary. Java.io.file is an absolute failure because it doesn't respect Mac OSX's case sensitivity rules
@@ -17,9 +19,10 @@ fun File.toMFile() = MFile(this)
 
 /*TODO: SUBCLASS IS PROBABLAMATIC BEACUASE OF THE BUILTIN KOTLIN `RESOLVES` FUNCTION (can I disable or override it? maybe in unnamed package?) WHICH SECRETLY TURNS THIS BACK INTO A REGULAR FILE*/
 /*TODO:  NOT SUBCLASSING JAVA.FILE IS PROBLEMATIC BECAUSE I NEED TONS OF BOILERPLATE SINCE THE FILE CLASS HAS SO MANY METHODS, EXTENSION METHODS, CLASSES, AND LIBRARIES IT WORKS WITH*/
-class MFile(val userPath: String): File(userPath) {
+sealed class MFile(internal val userPath: String): File(userPath) {
   val userFile = File(this.path)
 
+  constructor(file: MFile): this(file.userPath)
   constructor(file: File): this(file.path)
   constructor(parent: String, child: String): this(File(parent, child))
   constructor(parent: MFile, child: String): this(parent.path, child)
@@ -31,11 +34,11 @@ class MFile(val userPath: String): File(userPath) {
 	val pathSeparatorChar = File.pathSeparatorChar
 	val pathSeparator = File.pathSeparator
 
-	fun listRoots() = File.listRoots().map { MFile(it) }.toTypedArray()
+	fun listRoots() = File.listRoots().map { mFile(it) }.toTypedArray()
 	fun createTempFile(prefix: String, suffix: String?, directory: MFile?) =
-	  MFile(File.createTempFile(prefix, suffix, directory))
+	  mFile(File.createTempFile(prefix, suffix, directory))
 
-	fun createTempFile(prefix: String, suffix: String?) = MFile(File.createTempFile(prefix, suffix))
+	fun createTempFile(prefix: String, suffix: String?) = mFile(File.createTempFile(prefix, suffix))
   }
 
   override fun getParentFile(): MFile? {
@@ -81,13 +84,10 @@ class MFile(val userPath: String): File(userPath) {
   }
 
 
-
   /*MUST KEEP THESE METHODS HERE AND NOT AS EXTENSIONS IN ORDER TO ROBUSTLY OVERRIDE KOTLIN.STDLIB'S DEFAULT FILE EXTENSIONS. OTHERWISE, I'D HAVE TO MICROMANAGE MY IMPORTS TO MAKE SURE I'M IMPORTING THE CORRECT EXTENSIONS*/
 
 
   fun relativeTo(base: MFile): MFile = idFile.relativeTo(base.idFile).toMFile()
-
-
 
 
   fun startsWith(other: MFile): Boolean = idFile.startsWith(other.idFile)
@@ -106,7 +106,6 @@ class MFile(val userPath: String): File(userPath) {
   fun resolveSibling(relative: String): MFile = userFile.resolveSibling(relative).toMFile()
 
   fun mkparents() = parentFile!!.mkdirs()
-
 
 
   var text
@@ -161,7 +160,7 @@ class MFile(val userPath: String): File(userPath) {
   }
 
   fun resRepExt(newExt: String) =
-	MFile(parentFile!!.absolutePath + separator + nameWithoutExtension + "." + newExt)
+	mFile(parentFile!!.absolutePath + separator + nameWithoutExtension + "." + newExt)
 
   fun deleteIfExists() {
 	if (exists()) {
@@ -179,9 +178,9 @@ class MFile(val userPath: String): File(userPath) {
 
   infix fun withExtension(ext: String): MFile {
 	return when (this.extension) {
-	  ext  -> this
-	  ""   -> MFile(this.path + "." + ext)
-	  else -> MFile(this.path.replace("." + this.extension, ".$ext"))
+	  ext -> this
+	  "" -> mFile(this.path + "." + ext)
+	  else -> mFile(this.path.replace("." + this.extension, ".$ext"))
 	}
   }
 
@@ -195,10 +194,35 @@ class MFile(val userPath: String): File(userPath) {
 
 }
 
+fun mFile(file: MFile) = mFile(file.userPath)
+fun mFile(file: File) = mFile(file.path)
+fun mFile(parent: String, child: String) = mFile(File(parent, child))
+fun mFile(parent: MFile, child: String) = mFile(parent.path, child)
+fun mFile(uri: URI) = mFile(File(uri))
 
+private annotation class Extensions(vararg val exts: String)
 
+private val fileTypes = mutableMapOf<String,KClass<out MFile>>().withStoringDefault {extension ->
+  MFile::class.sealedSubclasses.firstOrNull {
+	it.annotations.filterIsInstance<Extensions>().firstOrNull()?.exts?.let { extension in it } ?: false
+  } ?: UnknownFile::class
+}
 
+fun mFile(userPath: String): MFile {
 
+  return fileTypes[File(userPath).extension].constructors.first().call(userPath)
 
+//  val f = File(userPath)
+//  MFile::class.sealedSubclasses.firstOrNull {
+//	it.annotations.filterIsInstance<Extensions>().firstOrNull()?.exts?.let { f.extension in it } ?: false
+//  }
+//
+//  when (File(userPath).extension) {
+//	"json" -> JsonFile(userPath)
+//	else   -> UnknownFile(userPath)
+//  }
+}
 
-
+@Extensions("json")
+class JsonFile(userPath: String): MFile(userPath)
+class UnknownFile(userPath: String): MFile(userPath)
