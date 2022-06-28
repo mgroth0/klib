@@ -223,6 +223,21 @@ fun mFile(userPath: String): MFile {
 //  }
 }
 
+class UnknownFile(userPath: String): MFile(userPath)
+
+class Folder(userPath: String): MFile(userPath)
+
 @Extensions("json")
 class JsonFile(userPath: String): MFile(userPath)
-class UnknownFile(userPath: String): MFile(userPath)
+
+@Extensions("DS_Store")
+class PyFile(userPath: String): MFile(userPath)
+
+@Extensions("sh")
+class ShellFile(userPath: String): MFile(userPath)
+
+@Extensions("applescript")
+class ApplescriptFile(userPath: String): MFile(userPath)
+
+@Extensions("DS_Store")
+class DSStoreFile(userPath: String): MFile(userPath)
