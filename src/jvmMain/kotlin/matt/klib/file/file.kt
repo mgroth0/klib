@@ -178,8 +178,8 @@ sealed class MFile(internal val userPath: String): File(userPath) {
 
   infix fun withExtension(ext: String): MFile {
 	return when (this.extension) {
-	  ext -> this
-	  "" -> mFile(this.path + "." + ext)
+	  ext  -> this
+	  ""   -> mFile(this.path + "." + ext)
 	  else -> mFile(this.path.replace("." + this.extension, ".$ext"))
 	}
   }
@@ -202,7 +202,7 @@ fun mFile(uri: URI) = mFile(File(uri))
 
 private annotation class Extensions(vararg val exts: String)
 
-private val fileTypes = mutableMapOf<String,KClass<out MFile>>().withStoringDefault {extension ->
+private val fileTypes = mutableMapOf<String, KClass<out MFile>>().withStoringDefault { extension ->
   MFile::class.sealedSubclasses.firstOrNull {
 	it.annotations.filterIsInstance<Extensions>().firstOrNull()?.exts?.let { extension in it } ?: false
   } ?: UnknownFile::class
@@ -212,32 +212,36 @@ fun mFile(userPath: String): MFile {
 
   return fileTypes[File(userPath).extension].constructors.first().call(userPath)
 
-//  val f = File(userPath)
-//  MFile::class.sealedSubclasses.firstOrNull {
-//	it.annotations.filterIsInstance<Extensions>().firstOrNull()?.exts?.let { f.extension in it } ?: false
-//  }
-//
-//  when (File(userPath).extension) {
-//	"json" -> JsonFile(userPath)
-//	else   -> UnknownFile(userPath)
-//  }
+  //  val f = File(userPath)
+  //  MFile::class.sealedSubclasses.firstOrNull {
+  //	it.annotations.filterIsInstance<Extensions>().firstOrNull()?.exts?.let { f.extension in it } ?: false
+  //  }
+  //
+  //  when (File(userPath).extension) {
+  //	"json" -> JsonFile(userPath)
+  //	else   -> UnknownFile(userPath)
+  //  }
 }
 
 class UnknownFile(userPath: String): MFile(userPath)
 
 class Folder(userPath: String): MFile(userPath)
 
-@Extensions("json")
-class JsonFile(userPath: String): MFile(userPath)
+abstract class CodeFile(userPath: String): MFile(userPath)
 
-@Extensions("DS_Store")
-class PyFile(userPath: String): MFile(userPath)
+@Extensions("py")
+class PyFile(userPath: String): CodeFile(userPath)
 
 @Extensions("sh")
-class ShellFile(userPath: String): MFile(userPath)
+class ShellFile(userPath: String): CodeFile(userPath)
 
 @Extensions("applescript")
-class ApplescriptFile(userPath: String): MFile(userPath)
+class ApplescriptFile(userPath: String): CodeFile(userPath)
+
+abstract class DataFile(userPath: String): MFile(userPath)
+
+@Extensions("json")
+class JsonFile(userPath: String): DataFile(userPath)
 
 @Extensions("DS_Store")
-class DSStoreFile(userPath: String): MFile(userPath)
+class DSStoreFile(userPath: String): DataFile(userPath)
