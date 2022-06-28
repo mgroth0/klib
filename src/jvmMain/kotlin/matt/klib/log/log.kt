@@ -1,6 +1,6 @@
 package matt.klib.log
 
-import matt.klib.file.MFile
+import matt.file.MFile
 
 open class Logger(private val logfile: MFile? = null) {
   init {
