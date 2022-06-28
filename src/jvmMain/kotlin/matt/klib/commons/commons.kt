@@ -1,6 +1,7 @@
 package matt.klib.commons
 
 import matt.klib.file.MFile
+import matt.klib.file.mFile
 import matt.klib.sys.NEW_MAC
 import matt.klib.sys.OLD_MAC
 import matt.klib.sys.WINDOWS
@@ -42,17 +43,17 @@ operator fun MFile.plus(item: Char): MFile {
 
 ///*need things like this to all be in objects because they are instantiated lazily, and therefore wont be a memory leak issue when trying to have dynamic intelliJ plugins... in general this is definitely the best design and I'm sure this pattern has even broader advantages*/
 //object CommonFiles {
-val USER_HOME = MFile(thisMachine.homeDir)
+val USER_HOME = mFile(thisMachine.homeDir)
 val REGISTERED_FOLDER = USER_HOME[thisMachine.registeredDir]
 val BIN_FOLDER = REGISTERED_FOLDER + "bin"
 val APPLESCRIPT_FOLDER = (BIN_FOLDER + "applescript").apply { mkdirs() }
 val IDE_FOLDER = REGISTERED_FOLDER["IDE"]
-val APPLICATIONS_FOLDER = MFile("/Applications")
+val APPLICATIONS_FOLDER = mFile("/Applications")
 val DATA_FOLDER = REGISTERED_FOLDER.resolve("data")
 val SOUND_FOLDER = REGISTERED_FOLDER + "sound"
 val LOG_FOLDER = REGISTERED_FOLDER["log"].apply { mkdir() }
 val exceptionFolder = LOG_FOLDER["errorReports"]
-val USER_DIR = MFile(System.getProperty("user.dir"))
+val USER_DIR = mFile(System.getProperty("user.dir"))
 val TEMP_DIR by lazy { REGISTERED_FOLDER["tmp"].apply { mkdir() } }
 val WINDOW_GEOMETRY_FOLDER = DATA_FOLDER["window"]
 val SETTINGS_FOLDER = DATA_FOLDER["settings"]
@@ -63,7 +64,7 @@ val CACHE_FOLDER = REGISTERED_FOLDER["cache"]
 val KJG_DATA_FOLDER = DATA_FOLDER.resolve("kjg")
 //}
 
-val REL_ROOT_FILES = MFile("RootFiles")
+val REL_ROOT_FILES = mFile("RootFiles")
 val REL_LIBS_VERSIONS_TOML = REL_ROOT_FILES + "libs.versions.toml"
 
 
