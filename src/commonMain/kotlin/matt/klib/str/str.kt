@@ -254,3 +254,9 @@ class StringLineBuilder(private var s: String) {
 }
 
 fun <T> T?.orBlank(op: (T)->String = { toString() }) = this?.let { op(it) } ?: ""
+
+
+val NEW_LINE_CHARS = listOf('\n', '\r')
+
+/*dont change order, sometimes we need to check for the double char thing first*/
+val NEW_LINE_STRINGS = listOf("\r\n", "\n", "\r")
