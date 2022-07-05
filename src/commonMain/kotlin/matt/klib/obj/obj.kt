@@ -2,11 +2,11 @@ package matt.klib.obj
 
 import matt.klib.log.warn
 
-interface Identified: MaybeIdentified {
-  override val id: Int
+interface Identified<I: Any>: MaybeIdentified<I> {
+  override val id: I
 }
-interface MaybeIdentified {
-  val id: Int?
+interface MaybeIdentified<I: Any> {
+  val id: I?
 }
 
 interface Named {
@@ -14,22 +14,22 @@ interface Named {
 
 }
 
-open class Unique(
+open class Unique<I: Any>(
   open var name: String,
-  override var id: Int
-): Identified {
+  override var id: I
+): Identified<I> {
   override fun toString() =
 	"${this::class.simpleName} $id: $name"
 }
 
 fun newId(
-  vararg against: List<Identified>
+  vararg against: List<Identified<Int>>
 ): Int {
   warn("what if i delete the highest? i need to keep a record of nextID instead of this")
   return against.flatMap { it }.maxOf { it.id } + 1
 }
 fun new_id(
-  vararg against: List<MaybeIdentified>
+  vararg against: List<MaybeIdentified<Int>>
 ): Int {
   warn("what if i delete the highest? i need to keep a record of nextID instead of this")
   return against.flatMap { it }.maxOf { it.id!! } + 1
