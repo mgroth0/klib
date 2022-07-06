@@ -58,7 +58,7 @@ object JS_CLIENT: JsClient
 sealed interface MultiPlatformMod: ModType /*has common*/
 
 
-@Serializable @SerialName("ALL_PLATFORMS") object ALL: MultiPlatformMod, JvmMod, JsLibOnly, NativeLib
+@Serializable object ALL_PLATFORMS: MultiPlatformMod, JvmMod, JsLibOnly, NativeLib
 @Serializable object JVM_ONLY: MultiPlatformMod, JvmMod
 @Serializable object JS_ONLY: MultiPlatformMod, JsLibOnly
 @Serializable object NATIVE_ONLY: MultiPlatformMod, NativeMain
