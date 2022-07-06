@@ -1,48 +1,35 @@
 import kotlinx.serialization.Serializable
 
-@Serializable
-sealed interface ModType
+/*
+https://github.com/Kotlin/kotlinx.serialization/pull/1958
+*/
 
-sealed interface JvmMod: ModType
+@Serializable sealed interface ModType
 
-sealed interface JsMod: ModType {
+@Serializable sealed interface JvmMod: ModType
+
+@Serializable sealed interface JsMod: ModType {
   val client: Boolean
 }
 
-sealed interface JsLibOnly: JsMod {
+@Serializable sealed interface JsLibOnly: JsMod {
   override val client get() = false
 }
 
-sealed interface JsClient: JsMod {
+@Serializable sealed interface JsClient: JsMod {
   override val client get() = true
 }
 
-sealed interface NativeMod: ModType
-
-sealed interface NativeMain: NativeMod
-
-sealed interface NativeLib: NativeMod
-
-@Serializable
-object APP: ModType, JvmMod
-
-@Serializable
-object CLAPP: ModType, JvmMod
-
-@Serializable
-object APPLIB: ModType, JvmMod
-
-@Serializable
-object LIB: ModType, JvmMod
-
-@Serializable
-object ABSTRACT: ModType
-
-@Serializable
-object JS_LIB: JsLibOnly
-
-@Serializable
-object JS_CLIENT: JsClient
+@Serializable sealed interface NativeMod: ModType
+@Serializable sealed interface NativeMain: NativeMod
+@Serializable sealed interface NativeLib: NativeMod
+@Serializable object APP: ModType, JvmMod
+@Serializable object CLAPP: ModType, JvmMod
+@Serializable object APPLIB: ModType, JvmMod
+@Serializable object LIB: ModType, JvmMod
+@Serializable object ABSTRACT: ModType
+@Serializable object JS_LIB: JsLibOnly
+@Serializable object JS_CLIENT: JsClient
 
 //object NATIVE_LIB: JsLibOnly
 //object NATIVE_MAIN: JsClient
