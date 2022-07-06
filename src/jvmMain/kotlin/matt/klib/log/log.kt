@@ -1,3 +1,4 @@
+@file:JvmName("LogJvmKt")
 package matt.klib.log
 
 import java.io.ByteArrayOutputStream
