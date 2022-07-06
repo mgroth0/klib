@@ -4,6 +4,7 @@ package matt.klib.tfx
 
 fun String.isLong() = toLongOrNull() != null
 fun String.isInt() = toIntOrNull() != null
+fun String.isBoolean() = toBooleanStrictOrNull() != null
 fun String.isDouble() = toDoubleOrNull() != null
 fun String.isFloat() = toFloatOrNull() != null
 
