@@ -2,6 +2,10 @@ package matt.klib.byte
 
 import matt.klib.byte.ByteSize.ByteUnit
 import matt.klib.byte.ByteSize.ByteUnit.B
+import matt.klib.byte.ByteSize.ByteUnit.GB
+import matt.klib.byte.ByteSize.ByteUnit.KB
+import matt.klib.byte.ByteSize.ByteUnit.MB
+import matt.klib.byte.ByteSize.ByteUnit.TB
 import matt.klib.dmap.withStoringDefault
 import kotlin.experimental.and
 
@@ -15,6 +19,12 @@ data class ByteSize(val bytes: Long): Comparable<ByteSize> {
   enum class ByteUnit(val size: Long) {
 	B(1), KB(1024), MB(KB.size*KB.size), GB(MB.size*KB.size), TB(GB.size*KB.size)
   }
+
+  val b get() = unitReps[B]
+  val kb get() = unitReps[KB]
+  val mb get() = unitReps[MB]
+  val gb get() = unitReps[GB]
+  val tb get() = unitReps[TB]
 
   val bestUnit by lazy {
 	ByteUnit.values().reversed().firstOrNull {
