@@ -3,6 +3,7 @@ package matt.klib.byte
 import kotlin.experimental.and
 
 data class ByteSize(val bytes: Long): Comparable<ByteSize> {
+  constructor(bytes: Number): this(bytes.toLong())
   companion object {
 	const val KILO: Long = 1024
 	const val MEGA = KILO*KILO
