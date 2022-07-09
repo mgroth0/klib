@@ -9,15 +9,7 @@ repositories {
 
 
 dependencies {
-
-//  commonMainCompileOnly("org.jetbrains:annotations:20.0.0")
-
-//  compileOnly()
-
-  //  commonMainCompileOnly(libs.kotlinx.html.common)
-
   commonMainImplementation(libs.kotlinx.serialization.json)
-
   commonMainImplementation(libs.kotlinx.html.common)
   //  jsMainApi(libs.kotlinx.html.js)
   jsMainImplementation(libs.kotlinx.html.js)

@@ -4,6 +4,7 @@ import kotlin.experimental.and
 
 data class ByteSize(val bytes: Long): Comparable<ByteSize> {
   constructor(bytes: Number): this(bytes.toLong())
+
   companion object {
 	const val KILO: Long = 1024
 	const val MEGA = KILO*KILO
@@ -12,14 +13,14 @@ data class ByteSize(val bytes: Long): Comparable<ByteSize> {
   }
 
   val kilo by lazy { bytes.toDouble()/KILO }
-  val mega by lazy { bytes.toDouble()/KILO/KILO }
-  val giga by lazy { bytes.toDouble()/KILO/KILO/KILO }
-  val tera by lazy { bytes.toDouble()/KILO/KILO/KILO/KILO }
+  val mega by lazy { bytes.toDouble()/MEGA }
+  val giga by lazy { bytes.toDouble()/GIGA }
+  val tera by lazy { bytes.toDouble()/TERA }
 
   val formatted by lazy {
-	println("trying to format ${bytes}")
+	println("trying to format $bytes")
 	when {
-	  //	  bytes == 0L           -> "0 B"
+	  tera > 1 || tera < -1 -> "%.3f TB".format(tera)
 	  giga > 1 || giga < -1 -> "%.3f GB".format(giga)
 	  mega > 1 || mega < -1 -> "%.3f MB".format(mega)
 	  kilo > 1 || kilo < -1 -> "%.3f KB".format(kilo)
