@@ -1,50 +1,42 @@
 package matt.klib.byte
 
+import matt.klib.byte.ByteSize.ByteUnit
+import matt.klib.byte.ByteSize.ByteUnit.B
+import matt.klib.dmap.withStoringDefault
 import kotlin.experimental.and
 
 data class ByteSize(val bytes: Long): Comparable<ByteSize> {
   constructor(bytes: Number): this(bytes.toLong())
 
-  companion object {
-	const val KILO: Long = 1024
-	const val MEGA = KILO*KILO
-	const val GIGA = MEGA*KILO
-	const val TERA = GIGA*KILO
+  val unitReps = mutableMapOf<ByteUnit, Double>().withStoringDefault {
+	bytes.toDouble()/it.size
   }
 
-  val kilo by lazy { bytes.toDouble()/KILO }
-  val mega by lazy { bytes.toDouble()/MEGA }
-  val giga by lazy { bytes.toDouble()/GIGA }
-  val tera by lazy { bytes.toDouble()/TERA }
-
-  val formatted by lazy {
-	println("trying to format $bytes")
-	when {
-	  tera > 1 || tera < -1 -> "%.3f TB".format(tera)
-	  giga > 1 || giga < -1 -> "%.3f GB".format(giga)
-	  mega > 1 || mega < -1 -> "%.3f MB".format(mega)
-	  kilo > 1 || kilo < -1 -> "%.3f KB".format(kilo)
-	  else                  -> "$bytes B"
-	}
+  enum class ByteUnit(val size: Long) {
+	B(1), KB(1024), MB(KB.size*KB.size), GB(MB.size*KB.size), TB(GB.size*KB.size)
   }
 
-  override fun compareTo(other: ByteSize): Int {
-	return this.bytes.compareTo(other.bytes)
+  val bestUnit by lazy {
+	ByteUnit.values().reversed().firstOrNull {
+	  val rep = unitReps[it]
+	  rep > 1 || rep < -1
+	} ?: B
   }
 
-  override fun toString(): String {
-	return formatted
-  }
-
-  operator fun plus(other: ByteSize): ByteSize {
-	return ByteSize(bytes + other.bytes)
-  }
-
-  operator fun minus(other: ByteSize): ByteSize {
-	return ByteSize(bytes - other.bytes)
-  }
-
+  val formatted by lazy { FormattedByteSize(unitReps[bestUnit], bestUnit) }
+  override fun compareTo(other: ByteSize) = this.bytes.compareTo(other.bytes)
+  override fun toString() = formatted.toString()
+  operator fun plus(other: ByteSize) = ByteSize(bytes + other.bytes)
+  operator fun minus(other: ByteSize) = ByteSize(bytes - other.bytes)
 }
+
+class FormattedByteSize(val num: Double, val unit: ByteUnit) {
+  override fun toString(): String {
+	return if (unit == B) "$num ${unit.name}"
+	else "%.3f ${unit.name}".format(num)
+  }
+}
+
 
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
 @OverloadResolutionByLambdaReturnType
