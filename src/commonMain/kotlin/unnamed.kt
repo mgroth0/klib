@@ -7,6 +7,7 @@ https://github.com/Kotlin/kotlinx.serialization/pull/1958
 @Serializable sealed interface ModType
 
 @Serializable sealed interface JvmMod: ModType
+@Serializable sealed interface JvmOnlyMod: JvmMod
 
 @Serializable sealed interface JsMod: ModType {
   val client: Boolean
@@ -23,10 +24,10 @@ https://github.com/Kotlin/kotlinx.serialization/pull/1958
 @Serializable sealed interface NativeMod: ModType
 @Serializable sealed interface NativeMain: NativeMod
 @Serializable sealed interface NativeLib: NativeMod
-@Serializable object APP: ModType, JvmMod
-@Serializable object CLAPP: ModType, JvmMod
-@Serializable object APPLIB: ModType, JvmMod
-@Serializable object LIB: ModType, JvmMod
+@Serializable object APP: ModType, JvmOnlyMod
+@Serializable object CLAPP: ModType, JvmOnlyMod
+@Serializable object APPLIB: ModType, JvmOnlyMod
+@Serializable object LIB: ModType, JvmOnlyMod
 @Serializable object ABSTRACT: ModType
 @Serializable object JS_LIB: JsLibOnly
 @Serializable object JS_CLIENT: JsClient
