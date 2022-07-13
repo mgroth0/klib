@@ -130,6 +130,7 @@ fun err(s: String = ""): Nothing {
   throw RuntimeException(s)
 }
 
+val NOT_IMPLEMENTED: Nothing get() = throw NotImplementedError()
 val NEVER: Nothing get() = err("NEVER")
 
 fun listsEqual(list1: List<*>, list2: List<*>): Boolean {
