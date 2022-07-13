@@ -2,6 +2,7 @@ package matt.klib.commons
 
 import matt.klib.sys.NEW_MAC
 import matt.klib.sys.OLD_MAC
+import matt.klib.sys.OPEN_MIND
 import matt.klib.sys.WINDOWS
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -13,12 +14,13 @@ val uname by lazy {
 }
 val thisMachine by lazy {
   when {
-	os.startsWith("Mac") -> when {
-	  uname == "arm64" -> NEW_MAC
-	  else             -> OLD_MAC
+	os == "Linux"        -> OPEN_MIND
+	os.startsWith("Mac") -> when (uname) {
+	  "arm64" -> NEW_MAC
+	  else    -> OLD_MAC
 	}
 
 	else                 -> WINDOWS
-  } // TODO: CHECK LINUX
+  }
 }
 
