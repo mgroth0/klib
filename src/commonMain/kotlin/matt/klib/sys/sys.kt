@@ -22,7 +22,9 @@ object WINDOWS: Machine(
   registeredDir = ":C::!@#$%^&*(C$^Some/Weird/Windows/Path", /*btw, delete .registeredDir file on windows home folder*/
 )
 
+interface Linux
+
 object OPEN_MIND: Machine(
   homeDir = "/om2/user/mjgroth",
   registeredDir = "registered",
-)
+), Linux
