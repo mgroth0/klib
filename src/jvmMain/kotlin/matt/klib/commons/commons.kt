@@ -1,9 +1,11 @@
 package matt.klib.commons
 
+import matt.klib.lang.err
+import matt.klib.sys.GAMING_WINDOWS
 import matt.klib.sys.NEW_MAC
 import matt.klib.sys.OLD_MAC
 import matt.klib.sys.OPEN_MIND
-import matt.klib.sys.WINDOWS
+import matt.klib.sys.WINDOWS_11_PAR_WORK
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -12,6 +14,7 @@ val uname by lazy {
   val proc = ProcessBuilder("uname", "-m").start()
   BufferedReader(InputStreamReader(proc.inputStream)).readText().trim()
 }
+val userName: String by lazy { System.getProperty("user.name") }
 val thisMachine by lazy {
   when {
 	os == "Linux"        -> OPEN_MIND
@@ -20,7 +23,11 @@ val thisMachine by lazy {
 	  else    -> OLD_MAC
 	}
 
-	else                 -> WINDOWS
+	else                 -> when (userName) {
+	  "mgrot"        -> GAMING_WINDOWS
+	  "matthewgroth" -> WINDOWS_11_PAR_WORK
+	  else           -> err("machine?")
+	}
   }
 }
 
