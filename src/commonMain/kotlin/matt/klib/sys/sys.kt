@@ -1,11 +1,17 @@
 package matt.klib.sys
 
-interface Mac
+sealed interface OS {
+  val caseSensitive: Boolean
+}
+
+sealed interface Mac: OS {
+  override val caseSensitive get() = false
+}
 
 sealed class Machine(
   val homeDir: String,
   val registeredDir: String,
-)
+): OS
 
 object OLD_MAC: Machine(
   homeDir = "/Users/matt",
@@ -17,7 +23,9 @@ object NEW_MAC: Machine(
   registeredDir = "registered",
 ), Mac
 
-sealed interface Windows
+sealed interface Windows: OS {
+  override val caseSensitive get() = false
+}
 
 object WINDOWS_11_PAR_WORK: Machine(
   homeDir = "C:\\Users\\matthewgroth",
@@ -29,7 +37,9 @@ object GAMING_WINDOWS: Machine(
   registeredDir = ":C::!@#$%^&*(C$^Some/Weird/Windows/Path", /*btw, delete .registeredDir file on windows home folder*/
 ), Windows
 
-interface Linux
+sealed interface Linux: OS {
+  override val caseSensitive get() = true
+}
 
 object OPEN_MIND: Machine(
   homeDir = "/om2/user/mjgroth",
