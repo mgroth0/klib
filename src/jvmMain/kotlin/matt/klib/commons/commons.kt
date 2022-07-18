@@ -7,13 +7,17 @@ import matt.klib.sys.NEW_MAC
 import matt.klib.sys.OLD_MAC
 import matt.klib.sys.OPEN_MIND
 import matt.klib.sys.WINDOWS_11_PAR_WORK
+import matt.klib.sys.Windows
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 val os: String by lazy { System.getProperty("os.name") }
 val uname by lazy {
-  val proc = ProcessBuilder("uname", "-m").start()
-  BufferedReader(InputStreamReader(proc.inputStream)).readText().trim()
+  if (thisMachine is Windows) null
+  else run {
+	val proc = ProcessBuilder("uname", "-m").start()
+	BufferedReader(InputStreamReader(proc.inputStream)).readText().trim()
+  }
 }
 val userName: String by lazy { System.getProperty("user.name") }
 val thisMachine: Machine  by lazy {
