@@ -7,20 +7,20 @@ import matt.klib.sys.NEW_MAC
 import matt.klib.sys.OLD_MAC
 import matt.klib.sys.OPEN_MIND
 import matt.klib.sys.WINDOWS_11_PAR_WORK
-import matt.klib.sys.Windows
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 val os: String by lazy { System.getProperty("os.name") }
 val uname by lazy {
-  if (thisMachine is Windows) null
-  else run {
-	val proc = ProcessBuilder("uname", "-m").start()
-	BufferedReader(InputStreamReader(proc.inputStream)).readText().trim()
-  }
+  val proc = if ("Windows" in os) ProcessBuilder("C:\\Program Files (x86)\\Git\\bin\\bash.exe", "-c")
+  else ProcessBuilder()
+
+  proc.command() += listOf("uname", "-m")
+
+  BufferedReader(InputStreamReader(proc.start().inputStream)).readText().trim()
 }
 val userName: String by lazy { System.getProperty("user.name") }
-val thisMachine: Machine  by lazy {
+val thisMachine: Machine by lazy {
   when {
 	os == "Linux"        -> OPEN_MIND
 	os.startsWith("Mac") -> when (uname) {
