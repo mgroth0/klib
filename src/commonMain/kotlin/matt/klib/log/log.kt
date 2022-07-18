@@ -16,6 +16,10 @@ fun profile(s: Any) {
 }
 
 val warned = mutableSetOf<Any>()
+fun warnIf(b: Boolean, w: ()->String) {
+  if (!b) warn(w())
+}
+
 fun warn(vararg s: Any) {
   s.forEach {
 	warned += it
