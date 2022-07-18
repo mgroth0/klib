@@ -39,3 +39,6 @@ val thisMachine: Machine by lazy {
   }
 }
 
+
+val GITHUB_USERNAME = "mgroth0"
+val DEFAULT_GITHUB_BRANCH_NAME = "master"
