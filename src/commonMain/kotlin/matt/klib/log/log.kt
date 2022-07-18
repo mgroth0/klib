@@ -20,6 +20,8 @@ fun warnIf(b: Boolean, w: ()->String) {
   if (b) warn(w())
 }
 
+fun warnIfNot(b: Boolean, w: ()->String) = warnIf(!b, w)
+
 fun warn(vararg s: Any) {
   s.forEach {
 	warned += it
