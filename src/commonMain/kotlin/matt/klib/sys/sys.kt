@@ -4,7 +4,9 @@ sealed interface OS {
   val caseSensitive: Boolean
 }
 
-sealed interface Mac: OS {
+sealed interface Unix: OS
+
+sealed interface Mac: Unix {
   override val caseSensitive get() = false
 }
 
@@ -37,7 +39,7 @@ object GAMING_WINDOWS: Machine(
   registeredDir = ":C::!@#$%^&*(C$^Some/Weird/Windows/Path", /*btw, delete .registeredDir file on windows home folder*/
 ), Windows
 
-sealed interface Linux: OS {
+sealed interface Linux: Unix {
   override val caseSensitive get() = true
 }
 

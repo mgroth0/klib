@@ -10,9 +10,11 @@ import matt.klib.sys.WINDOWS_11_PAR_WORK
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
+val WINDOWS_CMD_BASH_PREFIX = arrayOf("C:\\Program Files (x86)\\Git\\bin\\bash.exe", "-c")
+
 val os: String by lazy { System.getProperty("os.name") }
 val uname by lazy {
-  val proc = if ("Windows" in os) ProcessBuilder("C:\\Program Files (x86)\\Git\\bin\\bash.exe", "-c")
+  val proc = if ("Windows" in os) ProcessBuilder(*WINDOWS_CMD_BASH_PREFIX)
   else ProcessBuilder()
 
   proc.command() += listOf("uname", "-m")
