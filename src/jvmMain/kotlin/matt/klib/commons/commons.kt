@@ -18,7 +18,7 @@ val uname by lazy {
   val proc = if ("Windows" in os) ProcessBuilder(*WINDOWS_CMD_BASH_PREFIX)
   else ProcessBuilder()
 
-  proc.command() += listOf("uname", "-m")
+  proc.command() += listOf("/usr/bin/uname", "-m")
 
   BufferedReader(InputStreamReader(proc.start().inputStream)).readText().trim()
 }
