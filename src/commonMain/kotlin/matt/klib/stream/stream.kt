@@ -11,8 +11,6 @@ fun <T> Iterable<T>.applyEach(op: T.()->Unit) = forEach { it.apply(op) }
 fun <T> Sequence<T>.onEachApply(op: T.()->Unit) = onEach { it.apply(op) }
 
 
-
-
 @ExperimentalContracts
 fun <T: Any, R> T.search(
   getTarget: T.()->R?,
@@ -50,10 +48,6 @@ fun <T: Any> T.searchDepth(
 }
 
 
-
-
-
-
 fun <E> Collection<E>.allUnique(): Boolean {
   when (this) {
 	is List<E> -> {
@@ -72,9 +66,11 @@ fun <E> Collection<E>.allUnique(): Boolean {
 	  }
 	  return true
 	}
+
 	is Set<E>  -> {
 	  return true
 	}
+
 	else       -> return toList().allUnique()
   }
 }
@@ -85,5 +81,13 @@ fun <E> Collection<E>.allSame(): Boolean {
   } else {
 	val example = this.first()
 	return this.all { it == example }
+  }
+}
+
+fun <T> list(op: ListBuilder<T>.()->Unit) = ListBuilder<T>().apply(op)
+
+class ListBuilder<T>(private val list: MutableList<T> = mutableListOf()): MutableList<T> by list {
+  operator fun T.unaryPlus() {
+	list += this
   }
 }
