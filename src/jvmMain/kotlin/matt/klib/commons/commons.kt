@@ -2,6 +2,8 @@ package matt.klib.commons
 
 import matt.klib.lang.err
 import matt.klib.sys.GAMING_WINDOWS
+import matt.klib.sys.Linux
+import matt.klib.sys.Mac
 import matt.klib.sys.Machine
 import matt.klib.sys.NEW_MAC
 import matt.klib.sys.OLD_MAC
@@ -9,6 +11,8 @@ import matt.klib.sys.OPEN_MIND
 import matt.klib.sys.WINDOWS_11_PAR_WORK
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import kotlin.contracts.InvocationKind.AT_MOST_ONCE
+import kotlin.contracts.contract
 import kotlin.io.path.Path
 import kotlin.io.path.exists
 
@@ -53,3 +57,18 @@ val thisMachine: Machine by lazy {
 const val GITHUB_USERNAME = "mgroth0"
 val SYLABS_UNAME = GITHUB_USERNAME
 const val DEFAULT_GITHUB_BRANCH_NAME = "master"
+
+
+inline fun onLinux(op: ()->Unit) {
+  contract {
+	callsInPlace(op, AT_MOST_ONCE)
+  }
+  if (thisMachine is Linux) op()
+}
+
+inline fun onMac(op: ()->Unit) {
+  contract {
+	callsInPlace(op, AT_MOST_ONCE)
+  }
+  if (thisMachine is Mac) op()
+}
