@@ -15,6 +15,8 @@ dependencies {
   jsMainImplementation(libs.kotlinx.html.js)
   //  jvmMainApi(libs.kotlinx.html.jvm)
   jvmMainImplementation(libs.kotlinx.html.jvm)
+
+  jvmMainImplementation(projects.k.kjlib.lang)
 }
 
 //implementations(
