@@ -45,3 +45,5 @@ sealed interface MultiPlatformMod: ModType /*has common*/
 @Serializable object NO_JS: MultiPlatformMod, JvmMod, NativeLib
 @Serializable object NO_JVM: MultiPlatformMod, JsLibOnly, NativeLib
 
+
+
