@@ -1,7 +1,7 @@
 package matt.klib.log
 
 var DEBUG = false
-var PROFILE = true
+var PROFILE = false
 
 fun debug(s: Any) {
   if (DEBUG) {
