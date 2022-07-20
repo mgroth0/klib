@@ -51,4 +51,5 @@ val thisMachine: Machine by lazy {
 
 
 const val GITHUB_USERNAME = "mgroth0"
+val SYLABS_UNAME = GITHUB_USERNAME
 const val DEFAULT_GITHUB_BRANCH_NAME = "master"
