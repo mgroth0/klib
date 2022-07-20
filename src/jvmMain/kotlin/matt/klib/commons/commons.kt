@@ -9,6 +9,8 @@ import matt.klib.sys.OPEN_MIND
 import matt.klib.sys.WINDOWS_11_PAR_WORK
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import kotlin.io.path.Path
+import kotlin.io.path.exists
 
 private val WINDOWS_CMD_BASH_PREFIX = arrayOf("C:\\Program Files (x86)\\Git\\bin\\bash.exe", "-c")
 fun wrapWindowsBashCmd(vararg command: String) = arrayOf(*WINDOWS_CMD_BASH_PREFIX, command.joinToString(" "))
@@ -18,7 +20,15 @@ val uname by lazy {
   val proc = if ("Windows" in os) ProcessBuilder(*WINDOWS_CMD_BASH_PREFIX)
   else ProcessBuilder()
 
-  proc.command() += listOf("/usr/bin/uname", "-m")
+
+
+  proc.command() += listOf(
+	listOf(
+	  "/usr/bin/uname",
+	  "/bin/uname" /*vagrant, singularity*/
+	).first { Path(it).exists() },
+	"-m"
+  )
 
   BufferedReader(InputStreamReader(proc.start().inputStream)).readText().trim()
 }
