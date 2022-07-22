@@ -1,3 +1,5 @@
+import matt.file.kt
+
 /*NPM INSTALL TASK IS DISABLED IN ROOT BUILDSCRIPT BECAUSE IT PRODUCES OBNOXIOUS WARNING. WILL NEED TO ENABLE THAT TO INSTALL DEPENDENCIES PROBABLY*/
 
 
@@ -31,3 +33,15 @@ plugins {
 
   /*experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE*/
 }
+
+
+//generateKt(matt.file.mFile("matt") + "fx" + "graphics" + "icon" + "gen" + "gen".kt) {
+//  """
+//  package matt.fx.graphics.icon.gen
+//
+//  enum class Icon {
+//    ${matt.file.commons.ICON_FOLDER.listFiles()!!.filter { it is matt.file.ImageFile }.joinToString(",") { safeKtName(it.nameWithoutExtension) }}
+//  }
+//
+//  """
+//}
