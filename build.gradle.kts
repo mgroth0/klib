@@ -40,7 +40,7 @@ generateKt(
   matt.file.mFile("matt") + "klib" + "icongen" + "icongen".kt
 ) {
   """
-  package matt.fx.graphics.icon.gen
+  package matt.klib.icongen
 
   enum class Icon {
     ${
