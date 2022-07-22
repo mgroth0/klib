@@ -34,13 +34,19 @@ plugins {
   /*experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE*/
 }
 
-
-//generateKt(matt.file.mFile("matt") + "fx" + "graphics" + "icon" + "gen" + "gen".kt) {
+//
+//generateKt(
+////  matt.mstruct.SourceSets.commonMain,
+//  matt.file.mFile("matt") + "klib" + "iconGen".kt
+//) {
 //  """
 //  package matt.fx.graphics.icon.gen
 //
 //  enum class Icon {
-//    ${matt.file.commons.ICON_FOLDER.listFiles()!!.filter { it is matt.file.ImageFile }.joinToString(",") { safeKtName(it.nameWithoutExtension) }}
+//    ${
+//	matt.file.commons.ICON_FOLDER.listFiles()!!.filter { it is matt.file.ImageFile }
+//	  .joinToString(",") { safeKtName(it.nameWithoutExtension) }
+//  }
 //  }
 //
 //  """
