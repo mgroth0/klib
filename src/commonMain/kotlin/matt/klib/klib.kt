@@ -63,12 +63,7 @@ fun todo(vararg s: String) {
   }
 }
 
-class Path(path: String) {
-  val path = path.removePrefix("/").removeSuffix("/")
-  operator fun plus(other: Path) = Path(path + "/" + other.path)
-  operator fun plus(other: String) = this + Path(other)
-  override fun toString() = path
-}
+
 
 
 fun <T> analyzeExceptions(op: ()->T): T {
