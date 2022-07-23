@@ -1,12 +1,17 @@
 package matt.klib.oset
 
+import matt.klib.olist.AddAtEnd
 import matt.klib.olist.Addition
 import matt.klib.olist.BasicObservableCollection
 import matt.klib.olist.Clear
 import matt.klib.olist.MIteratorWithSomeMemory
+import matt.klib.olist.MultiAddAtEnd
 import matt.klib.olist.MultiAddition
 import matt.klib.olist.MultiRemoval
 import matt.klib.olist.Removal
+import matt.klib.olist.RemoveElement
+import matt.klib.olist.RemoveElements
+import matt.klib.olist.RetainAll
 
 
 fun <E> Collection<E>.toBasicObservableSet(): BasicObservableSet<E> {
@@ -43,7 +48,7 @@ class BasicObservableSet<E>(c: Collection<E> = mutableSetOf()): BasicObservableC
   override fun iterator() = object: MIteratorWithSomeMemory<E>(theSet.iterator()) {
 	override fun remove() {
 	  super.remove()
-	  change(Removal(lastReturned))
+	  change(RemoveElement(theSet, lastReturned))
 	}
   }
 
@@ -51,7 +56,7 @@ class BasicObservableSet<E>(c: Collection<E> = mutableSetOf()): BasicObservableC
 	val b = theSet.add(element)
 	//        println("BasicObservableSet.add(${element})")
 	if (b) {
-	  change(Addition(element))
+	  change(AddAtEnd(theSet, element))
 	}
 	return b
   }
@@ -59,27 +64,27 @@ class BasicObservableSet<E>(c: Collection<E> = mutableSetOf()): BasicObservableC
   override fun addAll(elements: Collection<E>): Boolean {
 	val b = theSet.addAll(elements)
 	//        taball("set addAll",elements)
-	if (b) change(MultiAddition(elements))
+	if (b) change(MultiAddAtEnd(theSet, elements))
 	return b
   }
 
   override fun clear() {
 	//        println("BasicObservableSet.clear")
 	theSet.clear()
-	change(Clear())
+	change(Clear(theSet))
   }
 
   override fun remove(element: E): Boolean {
 	val b = theSet.remove(element)
 	//        println("BasicObservableSet.remove(${element})")
-	if (b) change(Removal(element))
+	if (b) change(RemoveElement(theSet, element))
 	return b
   }
 
   override fun removeAll(elements: Collection<E>): Boolean {
 	val b = theSet.removeAll(elements)
 	//        taball("set removeAll",elements)
-	if (b) change(MultiRemoval(elements))
+	if (b) change(RemoveElements(theSet, elements))
 	return b
   }
 
@@ -88,7 +93,7 @@ class BasicObservableSet<E>(c: Collection<E> = mutableSetOf()): BasicObservableC
 	val toRemove = theSet.filter { it !in elements }
 	val b = theSet.retainAll(elements)
 	//        taball("set retainAll",elements)
-	if (b) change(MultiRemoval(toRemove))
+	if (b) change(RetainAll(theSet, toRemove, retained = elements))
 	return b
   }
 
