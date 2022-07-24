@@ -46,7 +46,3 @@ sealed interface MultiPlatformMod: ModType /*has common*/
 @Serializable object NO_JVM: MultiPlatformMod, JsLibOnly, NativeLib
 
 
-fun isExecutable(modType: ModType) = modType in setOf(APP, CLAPP)
-fun isAnyLib(modType: ModType) = modType in setOf(LIB, APPLIB)
-//val JvmOnlyMod.isExecutable get() = this in setOf(APP, CLAPP)
-//val JvmOnlyMod.isAnyLib get() = this in setOf(LIB, APPLIB)
