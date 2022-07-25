@@ -45,17 +45,22 @@ val uname by lazy {
 val userName: String by lazy { System.getProperty("user.name") }
 
 private val hostname by lazy {
-  InetAddress.getLocalHost().hostName
+  println("checking hostname")
+  val r = InetAddress.getLocalHost().hostName
+  println("hostname=${r}")
+  r
 }
 
 val thisMachine: Machine by lazy {
 
+  println("getting thisMachine")
 
-  when {
+  val r = when {
 
 
 	os == "Linux"        -> {
 	  if (hostname == "vagrant") VagrantLinuxMachine()
+
 	  else (when (hostname) {
 		"polestar"             -> Polestar
 		"OPENMIND-DTN.MIT.EDU" -> OpenMindDTN
@@ -82,6 +87,8 @@ val thisMachine: Machine by lazy {
 	  else           -> UnknownWindowsMachine()
 	}
   }
+  println("got thisMachine: $r")
+  r
 }
 
 
