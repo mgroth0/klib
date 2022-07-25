@@ -2,7 +2,6 @@ package matt.klib.sys
 
 import matt.klib.lang.NOT_IMPLEMENTED
 import matt.klib.lang.err
-import matt.klib.sys.OpenMindNode.OpenMindMainHeadNode
 
 sealed interface OS {
   val caseSensitive: Boolean
