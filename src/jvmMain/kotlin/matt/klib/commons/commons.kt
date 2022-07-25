@@ -1,16 +1,22 @@
 package matt.klib.commons
 
-import matt.klib.lang.err
 import matt.klib.sys.GAMING_WINDOWS
 import matt.klib.sys.Linux
 import matt.klib.sys.Mac
 import matt.klib.sys.Machine
 import matt.klib.sys.NEW_MAC
 import matt.klib.sys.OLD_MAC
-import matt.klib.sys.OPEN_MIND
+import matt.klib.sys.OpenMind
+import matt.klib.sys.OpenMindNode.OpenMindDTN
+import matt.klib.sys.OpenMindNode.OpenMindMainHeadNode
+import matt.klib.sys.OpenMindNode.Polestar
+import matt.klib.sys.UnknownLinuxMachine
+import matt.klib.sys.UnknownWindowsMachine
+import matt.klib.sys.VagrantLinuxMachine
 import matt.klib.sys.WINDOWS_11_PAR_WORK
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.net.InetAddress
 import kotlin.contracts.InvocationKind.AT_MOST_ONCE
 import kotlin.contracts.contract
 import kotlin.io.path.Path
@@ -37,9 +43,34 @@ val uname by lazy {
   BufferedReader(InputStreamReader(proc.start().inputStream)).readText().trim()
 }
 val userName: String by lazy { System.getProperty("user.name") }
+
+private val hostname by lazy {
+  InetAddress.getLocalHost().hostName
+}
+
 val thisMachine: Machine by lazy {
+
+
   when {
-	os == "Linux"        -> OPEN_MIND
+
+
+	os == "Linux"        -> {
+	  if (hostname == "vagrant") VagrantLinuxMachine()
+	  else (when (hostname) {
+		"polestar"             -> Polestar
+		"OPENMIND-DTN.MIT.EDU" -> OpenMindDTN
+		"openmind7"            -> OpenMindMainHeadNode
+		else                   -> null
+	  })?.let {
+		OpenMind(
+		  node = it,
+		  sImgLoc = System.getenv("SINGULARITY_CONTAINER"),
+		  slurmJobID = System.getenv("SLURM_JOBID")
+		)
+	  } ?: UnknownLinuxMachine(hostname = hostname)
+	}
+
+
 	os.startsWith("Mac") -> when (uname) {
 	  "arm64" -> NEW_MAC
 	  else    -> OLD_MAC
@@ -48,7 +79,7 @@ val thisMachine: Machine by lazy {
 	else                 -> when (userName) {
 	  "mgrot"        -> GAMING_WINDOWS
 	  "matthewgroth" -> WINDOWS_11_PAR_WORK
-	  else           -> err("machine?")
+	  else           -> UnknownWindowsMachine()
 	}
   }
 }
