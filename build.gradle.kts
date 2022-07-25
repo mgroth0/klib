@@ -21,20 +21,6 @@ dependencies {
   jvmMainImplementation(projects.k.kjlib.lang)
 }
 
-//implementations(
-//
-//)
-//implementations(
-//  implementation("org.jetbrains.kotlinx:kotlinx-html-common:0.7.3")
-//)
-
-plugins {
-  kotlin("plugin.serialization")
-
-  /*experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE*/
-}
-
-
 generateKt(
   matt.mstruct.SourceSets.commonMain,
   matt.file.mFile("matt") + "klib" + "icongen" + "icongen".kt
