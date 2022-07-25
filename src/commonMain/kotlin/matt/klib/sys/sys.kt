@@ -130,8 +130,8 @@ class VagrantLinuxMachine: LinuxMachine(
 )
 
 class UnknownLinuxMachine(val hostname: String): LinuxMachine(
-  getHomeDir = { "idk what the home dir of $this is" },
-  getRegisteredDir = { "idk what the registered dir of $this is" },
+  getHomeDir = { err("idk what the home dir of $this is") },
+  getRegisteredDir = { err("idk what the registered dir of $this is") },
 ) {
   override fun toString() = "[${UnknownLinuxMachine::class.simpleName} with hostname=$hostname]"
 }
