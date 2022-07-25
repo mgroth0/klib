@@ -2,9 +2,14 @@ package matt.klib.sys
 
 sealed interface OS {
   val caseSensitive: Boolean
+  val pathSep: String
+  val wrongPathSep: String
 }
 
-sealed interface Unix: OS
+sealed interface Unix: OS {
+  override val pathSep get() = "/"
+  override val wrongPathSep get() = "\\"
+}
 
 sealed interface Mac: Unix {
   override val caseSensitive get() = false
@@ -27,6 +32,8 @@ object NEW_MAC: Machine(
 
 sealed interface Windows: OS {
   override val caseSensitive get() = false
+  override val pathSep get() = "\\"
+  override val wrongPathSep get() = "/"
 }
 
 object WINDOWS_11_PAR_WORK: Machine(
