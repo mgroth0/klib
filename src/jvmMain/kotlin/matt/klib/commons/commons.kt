@@ -7,9 +7,13 @@ import matt.klib.sys.Machine
 import matt.klib.sys.NEW_MAC
 import matt.klib.sys.OLD_MAC
 import matt.klib.sys.OpenMind
+import matt.klib.sys.OpenMindDTN
+import matt.klib.sys.OpenMindMainHeadNode
 import matt.klib.sys.OpenMindNode.OpenMindDTN
 import matt.klib.sys.OpenMindNode.OpenMindMainHeadNode
 import matt.klib.sys.OpenMindNode.Polestar
+import matt.klib.sys.OpenMindSlurmNode
+import matt.klib.sys.Polestar
 import matt.klib.sys.UnknownLinuxMachine
 import matt.klib.sys.UnknownWindowsMachine
 import matt.klib.sys.VagrantLinuxMachine
@@ -51,6 +55,8 @@ private val hostname by lazy {
   r
 }
 
+const val SLURM_NODE_HOSTNAME_PREFIX = "node"
+
 val thisMachine: Machine by lazy {
 
   println("getting thisMachine")
@@ -60,8 +66,9 @@ val thisMachine: Machine by lazy {
 
 	os == "Linux"        -> {
 	  if (hostname == "vagrant") VagrantLinuxMachine()
-
-	  else (when (hostname) {
+	  else (if (hostname.startsWith(SLURM_NODE_HOSTNAME_PREFIX)) OpenMindSlurmNode(
+		hostname.substringAfter(SLURM_NODE_HOSTNAME_PREFIX).toInt()
+	  ) else when (hostname) {
 		"polestar"             -> Polestar
 		"OPENMIND-DTN.MIT.EDU" -> OpenMindDTN
 		"openmind7"            -> OpenMindMainHeadNode

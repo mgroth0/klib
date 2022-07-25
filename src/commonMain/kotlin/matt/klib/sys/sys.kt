@@ -102,13 +102,23 @@ class OpenMind(
   val inSingularity = sImgLoc != null
   val slurmJobID = slurmJobID?.toInt()
   val inSlurmJob = slurmJobID != null
+
+  init {
+	require(inSlurmJob == node is OpenMindSlurmNode)
+  }
 }
 
-enum class OpenMindNode {
-  Polestar,
-  OpenMindDTN,
-  OpenMindMainHeadNode /*7*/
-}
+sealed class OpenMindNode
+object Polestar: OpenMindNode()
+object OpenMindDTN: OpenMindNode()
+object OpenMindMainHeadNode: OpenMindNode()
+class OpenMindSlurmNode(val n: Int): OpenMindNode()
+
+//enum class OpenMindNode {
+//  Polestar,
+//  OpenMindDTN,
+//  OpenMindMainHeadNode /*7*/
+//}
 
 //object MainMachineForKcompRemoteExecution: OpenMind(
 //  node = OpenMindMainHeadNode,
