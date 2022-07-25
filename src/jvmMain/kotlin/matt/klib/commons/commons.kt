@@ -56,9 +56,9 @@ const val SLURM_NODE_HOSTNAME_PREFIX = "node"
 
 val thisMachine: Machine by lazy {
 
-  println("getting thisMachine")
+//  println("getting thisMachine")
 
-  val r = when {
+  when {
 
 
 	os == "Linux"        -> {
@@ -91,8 +91,8 @@ val thisMachine: Machine by lazy {
 	  else           -> UnknownWindowsMachine()
 	}
   }
-  println("got thisMachine: $r")
-  r
+//  println("got thisMachine: $r")
+//  r
 }
 
 
