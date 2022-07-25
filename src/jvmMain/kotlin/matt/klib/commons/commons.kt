@@ -9,9 +9,6 @@ import matt.klib.sys.OLD_MAC
 import matt.klib.sys.OpenMind
 import matt.klib.sys.OpenMindDTN
 import matt.klib.sys.OpenMindMainHeadNode
-import matt.klib.sys.OpenMindNode.OpenMindDTN
-import matt.klib.sys.OpenMindNode.OpenMindMainHeadNode
-import matt.klib.sys.OpenMindNode.Polestar
 import matt.klib.sys.OpenMindSlurmNode
 import matt.klib.sys.Polestar
 import matt.klib.sys.UnknownLinuxMachine
