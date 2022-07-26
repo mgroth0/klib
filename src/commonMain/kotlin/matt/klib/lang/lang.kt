@@ -1,9 +1,12 @@
+@JvmName("LangKtJvm")
+
 package matt.klib.lang
 
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind.AT_LEAST_ONCE
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
 import kotlin.contracts.contract
+import kotlin.jvm.JvmName
 import kotlin.reflect.KClass
 
 infix fun Boolean.ifTrue(op: ()->Unit) {
@@ -257,4 +260,4 @@ fun <R> nullIfExceptions(op: ()->R): R? {
 }
 
 fun opt(b: Boolean, s: Any) = if (b) arrayOf(s) else arrayOf()
-fun <R> ifOrNull(b: Boolean, op: () -> R) = if (b) op() else null
+fun <R> ifOrNull(b: Boolean, op: ()->R) = if (b) op() else null
