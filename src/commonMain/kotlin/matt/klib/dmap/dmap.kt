@@ -6,10 +6,16 @@ fun <K, V> MutableMap<K, V>.withStoringDefault(
   return DefaultStoringMap(this, d)
 }
 
+interface CanBeNotNullMutableMap<K, V>: MutableMap<K, V>, CanBeNotNullMap<K, V>
+
+interface CanBeNotNullMap<K, V>: Map<K, V> {
+  override operator fun get(key: K): V
+}
+
 class DefaultStoringMap<K, V>(
   val map: MutableMap<K, V>,
   val d: (K)->V
-): MutableMap<K, V> {
+): CanBeNotNullMutableMap<K, V> {
   override val size: Int
 	get() = map.size
 
@@ -17,11 +23,12 @@ class DefaultStoringMap<K, V>(
 
   override fun containsValue(value: V) = map.containsValue(value)
 
-  override fun get(key: K): V {
+  override operator fun get(key: K): V {
 	return map[key] ?: d(key).also {
 	  map[key] = it
 	}
   }
+
   fun getWithoutSetting(key: K): V? {
 	return map[key]
   }
@@ -44,3 +51,4 @@ class DefaultStoringMap<K, V>(
   override fun remove(key: K): V? = map.remove(key)
 
 }
+

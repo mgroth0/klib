@@ -91,3 +91,6 @@ class ListBuilder<T>(private val list: MutableList<T> = mutableListOf()): Mutabl
 	list += this
   }
 }
+
+inline fun <E, reified R> Iterable<E>.mapToArray(op: (E)->R) = map { op(it) }.toTypedArray()
+inline fun <E, reified R> Array<E>.mapToArray(op: (E)->R) = map { op(it) }.toTypedArray()

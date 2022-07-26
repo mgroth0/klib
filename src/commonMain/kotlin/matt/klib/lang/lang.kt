@@ -257,3 +257,4 @@ fun <R> nullIfExceptions(op: ()->R): R? {
 }
 
 fun opt(b: Boolean, s: Any) = if (b) arrayOf(s) else arrayOf()
+fun <R> ifOrNull(b: Boolean, op: () -> R) = if (b) op() else null
