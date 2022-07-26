@@ -1,4 +1,4 @@
-@JvmName("LangKtJvm")
+@file:JvmName("LangKtJvm")
 
 package matt.klib.lang
 
