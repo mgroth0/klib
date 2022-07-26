@@ -8,17 +8,11 @@ repositories {
   maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
 }
 
-
-
 dependencies {
   commonMainImplementation(libs.kotlinx.serialization.json)
   commonMainImplementation(libs.kotlinx.html.common)
-  //  jsMainApi(libs.kotlinx.html.js)
   jsMainImplementation(libs.kotlinx.html.js)
-  //  jvmMainApi(libs.kotlinx.html.jvm)
   jvmMainImplementation(libs.kotlinx.html.jvm)
-
-  jvmMainImplementation(projects.k.kjlib.lang)
 }
 
 generateKt(
