@@ -260,3 +260,12 @@ val NEW_LINE_CHARS = listOf('\n', '\r')
 
 /*dont change order, sometimes we need to check for the double char thing first*/
 val NEW_LINE_STRINGS = listOf("\r\n", "\n", "\r")
+
+fun Iterable<*>.joinWithSpaces() = joinToString(" ")
+fun Array<*>.joinWithSpaces() = joinToString(" ")
+
+fun Iterable<*>.joinWithNewLines() = joinToString("\n")
+fun Array<*>.joinWithNewLines() = joinToString("\n")
+
+fun Iterable<*>.strings() = map { it.toString() }
+fun Array<*>.strings() = map { it.toString() }.toTypedArray()

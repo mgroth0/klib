@@ -215,19 +215,19 @@ enum class Arrays(override val kls: KClass<*>): KotlinPrimitive {
 }
 
 inline val <reified T: Any> KClass<T>.jDefault: T?
-  get()  {
-  return when (T::class) {
-    Boolean::class -> false as T
-    Double::class -> 0.0 as T
-    Float::class -> 0.0f as T
-    Byte::class  -> 0 as T
-    Int::class -> 0 as T
-    Long::class -> 0 as T
-    Short::class -> 0 as T
-    Char::class -> '\u0000' as T
-    else -> null
+  get() {
+	return when (T::class) {
+	  Boolean::class -> false as T
+	  Double::class  -> 0.0 as T
+	  Float::class   -> 0.0f as T
+	  Byte::class    -> 0 as T
+	  Int::class     -> 0 as T
+	  Long::class    -> 0 as T
+	  Short::class   -> 0 as T
+	  Char::class    -> '\u0000' as T
+	  else           -> null
+	}
   }
-}
 
 //@Suppress("UnusedReceiverParameter") val KClass<Boolean>.jDefault: Boolean get() = false
 //@Suppress("UnusedReceiverParameter") val KClass<Double>.jDefault: Double get() = 0.0
@@ -241,17 +241,19 @@ inline val <reified T: Any> KClass<T>.jDefault: T?
 
 fun noExceptions(op: ()->Unit): Boolean {
   return try {
-    op()
-    true
+	op()
+	true
   } catch (e: Exception) {
-    false
+	false
   }
 }
 
 fun <R> nullIfExceptions(op: ()->R): R? {
   return try {
-    op()
+	op()
   } catch (e: Exception) {
-    null
+	null
   }
 }
+
+fun opt(b: Boolean, s: Any) = if (b) arrayOf(s) else arrayOf()
