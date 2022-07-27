@@ -14,20 +14,3 @@ dependencies {
   jsMainImplementation(libs.kotlinx.html.js)
   jvmMainImplementation(libs.kotlinx.html.jvm)
 }
-
-generateKt(
-  matt.mstruct.SourceSets.commonMain,
-  matt.file.mFile("matt") + "klib" + "icongen" + "icongen".kt
-) {
-  matt.mstruct.kt.KotlinCode(
-	packageStatement = "  package matt.klib.icongen",
-	code = """
-       enum class Icon {
-    ${
-	  matt.file.commons.ICON_FOLDER.listFiles()!!.filterIsInstance<matt.file.ImageFile>()
-		.joinToString(",") { matt.mstruct.kt.safeKtName(it.nameWithoutExtension) }
-	}
-  }
-    """.trimIndent()
-  )
-}
