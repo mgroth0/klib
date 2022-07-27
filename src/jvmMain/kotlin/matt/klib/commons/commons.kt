@@ -56,7 +56,7 @@ const val SLURM_NODE_HOSTNAME_PREFIX = "node"
 
 val thisMachine: Machine by lazy {
 
-//  println("getting thisMachine")
+  //  println("getting thisMachine")
 
   when {
 
@@ -64,7 +64,10 @@ val thisMachine: Machine by lazy {
 	os == "Linux"        -> {
 	  if (hostname == "vagrant") VagrantLinuxMachine()
 	  else (if (hostname.startsWith(SLURM_NODE_HOSTNAME_PREFIX)) OpenMindSlurmNode(
-		hostname.substringAfter(SLURM_NODE_HOSTNAME_PREFIX).toInt()
+
+		/*sometimes it looks like "node062", other times it looks like "node062.cm.cluster"*/
+
+		hostname.substringAfter(SLURM_NODE_HOSTNAME_PREFIX).substringBefore(".").toInt()
 	  ) else when (hostname) {
 		"polestar"             -> Polestar
 		"OPENMIND-DTN.MIT.EDU" -> OpenMindDTN
@@ -91,8 +94,8 @@ val thisMachine: Machine by lazy {
 	  else           -> UnknownWindowsMachine()
 	}
   }
-//  println("got thisMachine: $r")
-//  r
+  //  println("got thisMachine: $r")
+  //  r
 }
 
 
