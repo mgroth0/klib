@@ -23,7 +23,8 @@ fun Any.toStringBuilder(vararg props: KProperty0<*>): String {
 
 
 enum class Env {
-  JAVA_HOME;
+  JAVA_HOME,
+  SLURM_JOBID;
 
   fun get(): String? = System.getenv(name)
 }
