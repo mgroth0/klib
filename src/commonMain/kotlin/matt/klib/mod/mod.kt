@@ -27,6 +27,9 @@ https://github.com/Kotlin/kotlinx.serialization/pull/1958
 @Serializable sealed interface NativeMain: NativeMod
 @Serializable sealed interface NativeLib: NativeMod
 @Serializable sealed interface JvmExecutable: JvmOnlyMod
+
+/*these all have to have no properties or constructors for the time being since I'm regularly replacing instances with "createNewIsntance"s of the same class*/
+
 @Serializable class APP: JvmExecutable
 @Serializable class CLAPP: JvmExecutable
 @Serializable sealed interface JvmLib: JvmOnlyMod
