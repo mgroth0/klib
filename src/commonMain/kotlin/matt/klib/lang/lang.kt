@@ -265,3 +265,8 @@ fun <R> ifOrNull(b: Boolean, op: ()->R) = if (b) op() else null
 class If(val b: Boolean) {
   fun then(vararg s: Any?): Array<out Any?> = if (b) s else arrayOf()
 }
+
+/*sometimes I want to use [[apply]] but enforce that it has not return value*/
+fun <T> T.scope(op: T.()->Unit) {
+  op()
+}
