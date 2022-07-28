@@ -39,7 +39,7 @@ https://github.com/Kotlin/kotlinx.serialization/pull/1958
 sealed interface MultiPlatformMod: ModType /*has common*/
 
 
-@Serializable object ALL: MultiPlatformMod, JvmMod, JsLibOnly, NativeLib
+@Serializable object MULTI_ALL: MultiPlatformMod, JvmMod, JsLibOnly, NativeLib
 @Serializable object JVM_ONLY: MultiPlatformMod, JvmMod
 @Serializable object JS_ONLY: MultiPlatformMod, JsLibOnly
 @Serializable object NATIVE_ONLY: MultiPlatformMod, NativeMain
