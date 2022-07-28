@@ -1,5 +1,7 @@
 {
-    "modType": "NO_NATIVE",
+    "modType": {
+        "type": "matt.klib.mod.NO_NATIVE"
+    },
     "dependencies": [
         {
             "type": "matt.mstruct.BuildJsonLibDependency",
@@ -21,5 +23,6 @@
             "cfg": "jsMainImplementation",
             "key": "kotlinx-html-js"
         }
-    ]
+    ],
+    "note": null
 }
