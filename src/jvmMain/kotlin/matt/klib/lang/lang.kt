@@ -1,8 +1,10 @@
 package matt.klib.lang
 
+import java.lang.management.ManagementFactory
 import kotlin.reflect.KProperty0
 
-val RUNTIME = Runtime.getRuntime()!!
+val RUNTIME by lazy { Runtime.getRuntime()!! }
+val RUNTIME_MX by lazy { ManagementFactory.getRuntimeMXBean() }
 
 /*Thing()::class.java.classLoader*/
 /*ClassLoader.getPlatformClassLoader()*/
@@ -23,6 +25,6 @@ fun Any.toStringBuilder(vararg props: KProperty0<*>): String {
 enum class Env {
   JAVA_HOME;
 
-  fun get(): String? = System.getProperty(name)
+  fun get(): String? = System.getenv(name)
 }
 
