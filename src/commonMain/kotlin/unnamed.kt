@@ -29,7 +29,7 @@ https://github.com/Kotlin/kotlinx.serialization/pull/1958
 @Serializable object CLAPP: JvmExecutable
 @Serializable sealed interface JvmLib: ModType, JvmOnlyMod
 @Serializable object APPLIB: JvmLib
-@Serializable object LIB: JvmLib
+@Serializable data class LIB(val groovy: Boolean = false): JvmLib
 @Serializable object ABSTRACT: ModType
 @Serializable object JS_LIB: JsLibOnly
 @Serializable object JS_CLIENT: JsClient
