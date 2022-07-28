@@ -27,26 +27,26 @@ https://github.com/Kotlin/kotlinx.serialization/pull/1958
 @Serializable sealed interface NativeMain: NativeMod
 @Serializable sealed interface NativeLib: NativeMod
 @Serializable sealed interface JvmExecutable: JvmOnlyMod
-@Serializable object APP: JvmExecutable
-@Serializable object CLAPP: JvmExecutable
+@Serializable class APP: JvmExecutable
+@Serializable class CLAPP: JvmExecutable
 @Serializable sealed interface JvmLib: JvmOnlyMod
-@Serializable object APPLIB: JvmLib
-@Serializable object LIB: JvmLib
-@Serializable object ABSTRACT: ModType
-@Serializable object JS_LIB: JsLibOnly
-@Serializable object JS_CLIENT: JsClient
+@Serializable class APPLIB: JvmLib
+@Serializable class LIB: JvmLib
+@Serializable class ABSTRACT: ModType
+@Serializable class JS_LIB: JsLibOnly
+@Serializable class JS_CLIENT: JsClient
 
 //object NATIVE_LIB: matt.klib.mod.JsLibOnly
 //object NATIVE_MAIN: matt.klib.mod.JsClient
 sealed interface MultiPlatformMod: ModType /*has common*/
 
 
-@Serializable object MULTI_ALL: MultiPlatformMod, JvmMod, JsLibOnly, NativeLib
-@Serializable object JVM_ONLY: MultiPlatformMod, JvmMod
-@Serializable object JS_ONLY: MultiPlatformMod, JsLibOnly
-@Serializable object NATIVE_ONLY: MultiPlatformMod, NativeMain
-@Serializable object NO_NATIVE: MultiPlatformMod, JvmMod, JsLibOnly
-@Serializable object NO_JS: MultiPlatformMod, JvmMod, NativeLib
-@Serializable object NO_JVM: MultiPlatformMod, JsLibOnly, NativeLib
+@Serializable class MULTI_ALL: MultiPlatformMod, JvmMod, JsLibOnly, NativeLib
+@Serializable class JVM_ONLY: MultiPlatformMod, JvmMod
+@Serializable class JS_ONLY: MultiPlatformMod, JsLibOnly
+@Serializable class NATIVE_ONLY: MultiPlatformMod, NativeMain
+@Serializable class NO_NATIVE: MultiPlatformMod, JvmMod, JsLibOnly
+@Serializable class NO_JS: MultiPlatformMod, JvmMod, NativeLib
+@Serializable class NO_JVM: MultiPlatformMod, JsLibOnly, NativeLib
 
 
