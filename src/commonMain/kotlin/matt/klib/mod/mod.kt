@@ -1,3 +1,5 @@
+package matt.klib.mod
+
 import kotlinx.serialization.Serializable
 
 /*
@@ -34,8 +36,8 @@ https://github.com/Kotlin/kotlinx.serialization/pull/1958
 @Serializable object JS_LIB: JsLibOnly
 @Serializable object JS_CLIENT: JsClient
 
-//object NATIVE_LIB: JsLibOnly
-//object NATIVE_MAIN: JsClient
+//object NATIVE_LIB: matt.klib.mod.JsLibOnly
+//object NATIVE_MAIN: matt.klib.mod.JsClient
 sealed interface MultiPlatformMod: ModType /*has common*/
 
 
