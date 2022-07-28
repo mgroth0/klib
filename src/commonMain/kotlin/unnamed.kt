@@ -24,10 +24,10 @@ https://github.com/Kotlin/kotlinx.serialization/pull/1958
 @Serializable sealed interface NativeMod: ModType
 @Serializable sealed interface NativeMain: NativeMod
 @Serializable sealed interface NativeLib: NativeMod
-@Serializable sealed interface JvmExecutable: ModType, JvmOnlyMod
+@Serializable sealed interface JvmExecutable: JvmOnlyMod
 @Serializable object APP: JvmExecutable
 @Serializable object CLAPP: JvmExecutable
-@Serializable sealed interface JvmLib: ModType, JvmOnlyMod
+@Serializable sealed interface JvmLib: JvmOnlyMod
 @Serializable object APPLIB: JvmLib
 @Serializable object LIB: JvmLib
 @Serializable object ABSTRACT: ModType
