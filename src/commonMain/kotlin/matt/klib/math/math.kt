@@ -17,6 +17,7 @@ import kotlin.random.Random
 import kotlin.random.Random.Default
 
 
+
 const val THOUSAND = 1000.0
 const val MILLION = THOUSAND*THOUSAND
 const val BILLION = THOUSAND*MILLION

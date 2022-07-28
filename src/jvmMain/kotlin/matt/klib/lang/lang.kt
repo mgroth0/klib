@@ -17,3 +17,12 @@ fun Any.toStringBuilder(vararg props: KProperty0<*>): String {
   }
   return "[${0::class}$suffix]"
 }
+
+
+
+enum class Env {
+  JAVA_HOME;
+
+  fun get(): String? = System.getProperty(name)
+}
+
