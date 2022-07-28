@@ -30,26 +30,66 @@ https://github.com/Kotlin/kotlinx.serialization/pull/1958
 
 /*these all have to have no properties or constructors for the time being since I'm regularly replacing instances with "createNewIsntance"s of the same class*/
 
-@Serializable class APP: JvmExecutable
-@Serializable class CLAPP: JvmExecutable
+@Serializable class APP: JvmExecutable {
+  private companion object /*temporarily for migration*/
+}
+
+@Serializable class CLAPP: JvmExecutable {
+  private companion object /*temporarily for migration*/
+}
+
 @Serializable sealed interface JvmLib: JvmOnlyMod
-@Serializable class APPLIB: JvmLib
-@Serializable class LIB: JvmLib
-@Serializable class ABSTRACT: ModType
-@Serializable class JS_LIB: JsLibOnly
-@Serializable class JS_CLIENT: JsClient
+@Serializable class APPLIB: JvmLib {
+  private companion object /*temporarily for migration*/
+}
+
+@Serializable class LIB: JvmLib {
+  private companion object /*temporarily for migration*/
+}
+
+@Serializable class ABSTRACT: ModType {
+  private companion object /*temporarily for migration*/
+}
+
+@Serializable class JS_LIB: JsLibOnly {
+  private companion object /*temporarily for migration*/
+}
+
+@Serializable class JS_CLIENT: JsClient {
+  private companion object /*temporarily for migration*/
+}
 
 //object NATIVE_LIB: matt.klib.mod.JsLibOnly
 //object NATIVE_MAIN: matt.klib.mod.JsClient
 sealed interface MultiPlatformMod: ModType /*has common*/
 
 
-@Serializable class MULTI_ALL: MultiPlatformMod, JvmMod, JsLibOnly, NativeLib
-@Serializable class JVM_ONLY: MultiPlatformMod, JvmMod
-@Serializable class JS_ONLY: MultiPlatformMod, JsLibOnly
-@Serializable class NATIVE_ONLY: MultiPlatformMod, NativeMain
-@Serializable class NO_NATIVE: MultiPlatformMod, JvmMod, JsLibOnly
-@Serializable class NO_JS: MultiPlatformMod, JvmMod, NativeLib
-@Serializable class NO_JVM: MultiPlatformMod, JsLibOnly, NativeLib
+@Serializable class MULTI_ALL: MultiPlatformMod, JvmMod, JsLibOnly, NativeLib {
+  private companion object /*temporarily for migration*/
+}
+
+@Serializable class JVM_ONLY: MultiPlatformMod, JvmMod {
+  private companion object /*temporarily for migration*/
+}
+
+@Serializable class JS_ONLY: MultiPlatformMod, JsLibOnly {
+  private companion object /*temporarily for migration*/
+}
+
+@Serializable class NATIVE_ONLY: MultiPlatformMod, NativeMain {
+  private companion object /*temporarily for migration*/
+}
+
+@Serializable class NO_NATIVE: MultiPlatformMod, JvmMod, JsLibOnly {
+  private companion object /*temporarily for migration*/
+}
+
+@Serializable class NO_JS: MultiPlatformMod, JvmMod, NativeLib {
+  private companion object /*temporarily for migration*/
+}
+
+@Serializable class NO_JVM: MultiPlatformMod, JsLibOnly, NativeLib {
+  private companion object /*temporarily for migration*/
+}
 
 
